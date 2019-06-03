@@ -1,11 +1,14 @@
 [//]: # (SPDX-License-Identifier: CC-BY-4.0)
 
-## Hyperledger Fabric Samples
+## Hyperledger Fabric Samples with BalanceTracker extention
 
 Please visit the [installation instructions](http://hyperledger-fabric.readthedocs.io/en/latest/install.html)
 to ensure you have the correct prerequisites installed. Please use the
 version of the documentation that matches the version of the software you
 intend to use to ensure alignment.
+
+## Extended with infrastructure elements for BalanceTracker
+The repository contains several network extentions for the BalanceTracker Interticket application
 
 ## Download Binaries and Docker Images
 
