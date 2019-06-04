@@ -68,6 +68,8 @@ services:
       # match the username and password set for the associated CouchDB.
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+      - CORE_CHAINCODE_DEPLOYTIMEOUT=300s
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     # command: peer node start --peer-chaincodedev=true

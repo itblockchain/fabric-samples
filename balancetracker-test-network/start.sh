@@ -21,7 +21,8 @@ echo "##########################################################"
 echo "File path:"
 echo $1
 
-cp -R $1/src balancetracker-chaincode
+mkdir -p balancetracker-chaincode/src
+cp -R $1/src/main balancetracker-chaincode/src
 cp $1/build.gradle balancetracker-chaincode
 cp $1/settings.gradle balancetracker-chaincode
 rm -rf balancetracker-chaincode/test
