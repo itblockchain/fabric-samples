@@ -11,7 +11,7 @@ echo
 
 peer chaincode install -l java -n mycc -v v1 -p /opt/gopath/src/github.com/chaincode/
 
-sleep 10
+sleep 25
 
 echo
 echo "#####################################################"
