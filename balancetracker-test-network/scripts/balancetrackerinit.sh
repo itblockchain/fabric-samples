@@ -58,7 +58,7 @@ sleep 2
 #KEY SERVICE: create new keys
 echo
 echo "#####################################################"
-echo "##### Balance Tracker: test keys #########"
+echo "##### Balance Tracker: test KEYS #########"
 echo "#####################################################"
 echo
 echo "Test createKey 1"
@@ -93,7 +93,7 @@ peer chaincode query -C mychannel -n mycc -c '{"Args":["getKey","testKey2"]}'
 #FLAVOR SERVICE: test new Flavor, update existing Flavor
 echo
 echo "#####################################################"
-echo "##### Balance Tracker: Test Flavor #########"
+echo "##### Balance Tracker: Test FLAVORS #########"
 echo "#####################################################"
 echo
 echo "Test createFlavor 1"
@@ -122,7 +122,7 @@ sleep 5
 #ACCOUNT SERVICE: test new Account, updating existing Account
 echo
 echo "#####################################################"
-echo "##### Balance Tracker: Test Flavor #########"
+echo "##### Balance Tracker: Test ACCOUNTS #########"
 echo "#####################################################"
 echo
 echo "Test createAccount 1"
