@@ -19,7 +19,7 @@ public class BalanceTrackerBase extends ChaincodeBase {
      * Major version: 1.0 from go live
      * Minor version: increment at each master commit
      */
-    protected String version = "BTJ_v0.2";
+    protected String version = "BTJ_v0.4";
     protected String author = "Interticket";
     protected String description = "Balance Tracker implementation under Hyperledegr Fabric with Java chaincode";
 
