@@ -9,7 +9,11 @@ echo "##### Balance Tracker: installing chaincode #########"
 echo "#####################################################"
 echo
 
-peer chaincode install -l java -n mycc -v v1 -p /opt/gopath/src/github.com/chaincode/
+CORE_PEER_ADDRESS=peer0.org1.example.com:7051 peer chaincode install -l java -n mycc -v v1 -p /opt/gopath/src/github.com/chaincode/
+
+sleep 25
+
+CORE_PEER_ADDRESS=peer1.org1.example.com:7051 peer chaincode install -l java -n mycc -v v1 -p /opt/gopath/src/github.com/chaincode/
 
 sleep 25
 
@@ -19,7 +23,7 @@ echo "##### Balance Tracker: initializing chaincode #########"
 echo "#####################################################"
 echo
 
-peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")'
+CORE_PEER_ADDRESS=peer0.org1.example.com:7051 peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")'
 
 sleep 120
 
