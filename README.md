@@ -8,7 +8,9 @@ version of the documentation that matches the version of the software you
 intend to use to ensure alignment.
 
 ## Extended with infrastructure elements for BalanceTracker
-The repository contains several network extentions for the BalanceTracker Interticket application
+The repository contains several network extentions for the BalanceTracker Interticket application:
+- BalanceTracker Test / Dev network: a simple network with one peer, orderer service and ceritficate authority for dev or test scenarios
+- BalanceTracker QA network: a more complicated network, containing two peers, one certifiacate authority and one CLI for quality assurance scenarios
 
 ## Download Binaries and Docker Images
 
