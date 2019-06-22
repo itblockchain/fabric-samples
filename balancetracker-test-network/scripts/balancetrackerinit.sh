@@ -272,10 +272,16 @@ sleep 2
 
 
 echo
-echo "Test getQueryResult"
+echo "Test rich query getQueryResult"
 echo
 
 peer chaincode query -C mychannel -n mycc -c '{"Args":["getQueryResult","{\"selector\": {\"accountId\":\"testAccount1\"}}"]}'
+sleep 2
+
+echo
+echo
+
+peer chaincode query -C mychannel -n mycc -c '{"Args":["getQueryResult","{\"selector\": {\"modelType\":\"Account\"}}"]}'
 sleep 2
 
 echo "##########################################"
