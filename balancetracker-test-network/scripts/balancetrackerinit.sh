@@ -269,6 +269,15 @@ echo
 peer chaincode query -C mychannel -n mycc -c '{"Args":["getToken","testTokenIdNew"]}'
 
 sleep 2
+
+
+echo
+echo "Test getQueryResult"
+echo
+
+peer chaincode query -C mychannel -n mycc -c '{"Args":["getQueryResult","{\"selector\": {\"accountId\":\"testAccount1\"}}"]}'
+sleep 2
+
 echo "##########################################"
 echo "##### End of Integration testing #########"
 echo "##########################################"
