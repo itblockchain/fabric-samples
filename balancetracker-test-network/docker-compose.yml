@@ -70,6 +70,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
       - CORE_CHAINCODE_DEPLOYTIMEOUT=300s
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     # command: peer node start --peer-chaincodedev=true
