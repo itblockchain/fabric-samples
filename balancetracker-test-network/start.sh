@@ -20,6 +20,8 @@ echo "##########################################################"
 
 echo "File path:"
 echo $1
+echo "with explorer"
+echo $2
 
 mkdir -p balancetracker-chaincode/src
 cp -R $1/src/main balancetracker-chaincode/src
@@ -31,8 +33,10 @@ echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
+# Shutting down exisiting network
 docker-compose -f docker-compose.yml down
 
+# Starting hyperledger fabric
 docker-compose -f docker-compose.yml up -d ca.example.com orderer.example.com peer0.org1.example.com couchdb cli
 
 # wait for Hyperledger Fabric to start
@@ -45,6 +49,13 @@ sleep ${FABRIC_START_TIMEOUT}
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel create -o orderer.example.com:7050 -c mychannel -f /etc/hyperledger/configtx/channel.tx
 # Join peer0.org1.example.com to the channel.
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel join -b mychannel.block
+
+# Starting hyperledger explorer
+if [ "$2" == "-e" ]; then
+echo "starting explorer"
+docker-compose -f docker-compose.yml up -d explorerdb.example.com explorer.mynetwork.com proms grafana
+fi
+
 # Executing balancetracker initialization
 docker exec cli scripts/balancetrackerinit.sh
 

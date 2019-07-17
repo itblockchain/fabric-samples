@@ -5,6 +5,12 @@
 #
 version: '2'
 
+volumes:
+  pgdata:
+  walletstore:
+  grafana-storage:
+  prometheus-storage:
+
 networks:
   basic:
 
@@ -124,7 +130,75 @@ services:
         - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
     networks:
         - basic
-    #depends_on:
-    #  - orderer.example.com
-    #  - peer0.org1.example.com
-    #  - couchdb
+    depends_on:
+      - orderer.example.com
+      - peer0.org1.example.com
+      - couchdb
+
+  explorerdb.example.com:
+    image: hyperledger/explorer-db:latest
+    container_name: explorerdb.example.com
+    hostname: explorerdb.example.com
+    environment:
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWORD=password
+    volumes:
+      - ./app/persistence/fabric/postgreSQL/db/createdb.sh:/docker-entrypoint-initdb.d/createdb.sh
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - basic
+    depends_on:
+      - orderer.example.com
+      - peer0.org1.example.com
+      - couchdb
+
+
+  explorer.mynetwork.com:
+    image: hyperledger/explorer:latest
+    container_name: explorer.example.com
+    hostname: explorer.example.com
+    environment:
+      - DATABASE_HOST=explorerdb.example.com
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWD=password
+      - DISCOVERY_AS_LOCALHOST=false
+    volumes:
+      - ./explorer/config.json:/opt/explorer/app/platform/fabric/config.json
+      - ./explorer/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
+      - ./crypto-config:/tmp/crypto
+      - walletstore:/opt/wallet
+    command: sh -c "sleep 16&& node /opt/explorer/main.js && tail -f /dev/null"
+    ports:
+      - 8090:8080
+    networks:
+      - basic
+    depends_on:
+      - orderer.example.com
+      - peer0.org1.example.com
+      - couchdb
+      - explorerdb.example.com
+
+  proms:
+    container_name: proms
+    image: prom/prometheus:latest
+    volumes:
+      - ./app/platform/fabric/artifacts/operations/balance-transfer/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-storage:/prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      - basic
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    volumes:
+      - ./app/platform/fabric/artifacts/operations/balance-transfer/balance-transfer-grafana-dashboard.json:/var/lib/grafana/dashboards/mydashboard.json
+      - ./app/platform/fabric/artifacts/operations/grafana_conf/provisioning:/etc/grafana/provisioning
+      - grafana-storage:/var/lib/grafana
+    ports:
+      - '3000:3000'
+    networks:
+      - basic
+
