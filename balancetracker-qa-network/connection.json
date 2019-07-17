@@ -47,7 +47,7 @@
             "url": "grpc://localhost:7051"
         },
         "peer1.org1.example.com": {
-            "url": "grpc://localhost:7055"
+            "url": "grpc://localhost:7052"
         }
     },
     "certificateAuthorities": {
