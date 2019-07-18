@@ -9,11 +9,7 @@ echo "##### Balance Tracker: installing chaincode #########"
 echo "#####################################################"
 echo
 
-CORE_PEER_ADDRESS=peer0.org1.example.com:7051 peer chaincode install -l java -n mycc -v v1 -p /opt/gopath/src/github.com/chaincode/
-
-sleep 25
-
-CORE_PEER_ADDRESS=peer1.org1.example.com:7051 peer chaincode install -l java -n mycc -v v1 -p /opt/gopath/src/github.com/chaincode/
+peer chaincode install -l java -n mycc -v v1 -p /opt/gopath/src/github.com/chaincode/
 
 sleep 25
 
@@ -23,7 +19,7 @@ echo "##### Balance Tracker: initializing chaincode #########"
 echo "#####################################################"
 echo
 
-CORE_PEER_ADDRESS=peer0.org1.example.com:7051 peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")'
+peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")'
 
 sleep 120
 
@@ -274,6 +270,14 @@ peer chaincode query -C mychannel -n mycc -c '{"Args":["getToken","testTokenIdNe
 
 sleep 2
 
+echo
+echo "#####################################################"
+echo "##### Balance Tracker: Test Rich query services #########"
+echo "#####################################################"
+echo
+echo "Test issueCertificate"
+echo
+
 
 echo
 echo "Test rich query getQueryResult"
@@ -287,6 +291,25 @@ echo
 
 peer chaincode query -C mychannel -n mycc -c '{"Args":["getQueryResult","{\"selector\": {\"modelType\":\"Account\"}}"]}'
 sleep 2
+
+
+echo
+echo "#####################################################"
+echo "##### Balance Tracker: Test Certificate services #########"
+echo "#####################################################"
+echo
+echo "Test issueCertificate"
+echo
+
+peer chaincode invoke -o orderer.example.com:7050 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["issueCertificate","testCert1", "hashValue1", "myCert", "testAccount1" ]}'
+sleep 5
+
+echo
+echo
+
+peer chaincode query -C mychannel -n mycc -c '{"Args":["getCertificate","testCert1"]}'
+sleep 2
+
 
 echo "##########################################"
 echo "##### End of Integration testing #########"
