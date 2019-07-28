@@ -19,7 +19,7 @@ echo "##### Balance Tracker: initializing chaincode #########"
 echo "#####################################################"
 echo
 
-peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")'
+peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":["createKey","getKey","createAccount","getAccount"]}' -P 'OR ("Org1MSP.member")'
 
 sleep 120
 
@@ -54,6 +54,16 @@ echo
 peer chaincode query -C mychannel -n mycc -c '{"Args":["getDescription"]}'
 
 #sleep 2
+
+#MASTER SERVICE: query master service: getServices
+echo
+echo "Test getServices"
+echo
+
+peer chaincode query -C mychannel -n mycc -c '{"Args":["getServices"]}'
+
+#sleep 2
+
 
 #KEY SERVICE: create new keys
 echo
