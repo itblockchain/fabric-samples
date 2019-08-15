@@ -18,10 +18,12 @@ echo "##########################################################"
 echo "##### Preparing java files #########"
 echo "##########################################################"
 
-echo "File path:"
+echo "Chaincode File path:"
 echo $1
-echo "with explorer"
+echo "Client File path:"
 echo $2
+echo "with explorer"
+echo $3
 
 mkdir -p balancetracker-chaincode/src
 cp -R $1/src/main balancetracker-chaincode/src
@@ -33,9 +35,11 @@ echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
+# Shutting down exisiting network
 docker-compose -f docker-compose.yml down
 
-docker-compose -f docker-compose.yml up -d ca.example.com orderer.example.com peer0.org1.example.com peer1.org1.example.com couchdb cli
+# Starting hyperledger fabric
+docker-compose -f docker-compose.yml up -d ca.example.com orderer.example.com peer0.org1.example.com couchdb cli
 
 # wait for Hyperledger Fabric to start
 # incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
@@ -43,29 +47,29 @@ export FABRIC_START_TIMEOUT=30
 #echo ${FABRIC_START_TIMEOUT}
 sleep ${FABRIC_START_TIMEOUT}
 
-# Create the channel peer1.org1.example.com
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer1.org1.example.com peer channel create -o orderer.example.com:7050 -c mychannel -f /etc/hyperledger/configtx/channel.tx
-
-# Join peer1.org1.example.com to the channel.
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer1.org1.example.com peer channel join -b mychannel.block
-
-# Copying genesis block to peer0.org1.example.com to the channel.
-
-docker cp peer1.org1.example.com:/opt/gopath/src/github.com/hyperledger/fabric/mychannel.block mychannel.block
-
-docker cp mychannel.block peer0.org1.example.com:/opt/gopath/src/github.com/hyperledger/fabric/
-
+# Create the channel
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel create -o orderer.example.com:7050 -c mychannel -f /etc/hyperledger/configtx/channel.tx
 # Join peer0.org1.example.com to the channel.
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel join -b mychannel.block
 
 # Starting hyperledger explorer
-if [ "$2" == "-e" ]; then
+if [ "$3" == "-e" ]; then
 echo "starting explorer"
 docker-compose -f docker-compose.yml up -d explorerdb.example.com explorer.mynetwork.com proms grafana
 fi
 
 # Executing balancetracker initialization
 docker exec cli scripts/balancetrackerinit.sh
+
+# Executing SDK side testing scripts
+if [ ! -z "$2" ]
+then
+echo "SDK test"
+docker exec cli mkdir /srv/test/
+docker cp $2 cli:/srv/test
+docker exec cli java -jar /srv/test/BalanceTracker-1.0.1.jar
+fi
+
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is finishing #########"
