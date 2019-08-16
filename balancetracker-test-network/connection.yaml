@@ -13,7 +13,11 @@ channels:
         orderers:
         - orderer.example.com
         peers:
-            peer0.org1.example.com: {}
+            peer0.org1.example.com:
+                endorsingPeer: true
+                chaincodeQuery: true
+                ledgerQuery: true
+                eventSource: true
 organizations:
     Org1:
         mspid: Org1MSP
@@ -27,6 +31,7 @@ orderers:
 peers:
     peer0.org1.example.com:
         url: grpc://localhost:7051
+        eventUrl: grpc://localhost:7053
 certificateAuthorities:
     ca.example.com:
         url: http://localhost:7054
