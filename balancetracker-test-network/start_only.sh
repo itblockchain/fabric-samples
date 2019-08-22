@@ -15,23 +15,6 @@ echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
 echo
 
 echo "##########################################################"
-echo "##### Preparing java files #########"
-echo "##########################################################"
-
-echo "Chaincode File path:"
-echo $1
-echo "Client File path:"
-echo $2
-echo "with explorer"
-echo $3
-
-mkdir -p balancetracker-chaincode/src
-cp -R $1/src/main balancetracker-chaincode/src
-cp $1/build.gradle balancetracker-chaincode
-cp $1/settings.gradle balancetracker-chaincode
-rm -rf balancetracker-chaincode/test
-
-echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
@@ -59,17 +42,7 @@ docker-compose -f docker-compose.yml up -d explorerdb.example.com explorer.mynet
 fi
 
 # Executing balancetracker initialization
-docker exec cli scripts/balancetrackerinit.sh
-
-# Executing SDK side testing scripts
-if [ ! -z "$2" ] && [ "$2" != "-e" ];
-then
-echo "SDK test"
-docker exec cli mkdir /srv/test/
-docker cp $2 cli:/srv/test
-docker exec cli java -jar /srv/test/BalanceTracker-1.0.1.jar
-fi
-
+docker exec cli scripts/balancetrackerinstallonly.sh
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is finishing #########"

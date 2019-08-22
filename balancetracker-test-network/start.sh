@@ -53,7 +53,7 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/h
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel join -b mychannel.block
 
 # Starting hyperledger explorer
-if [ "$3" == "-e" ]; then
+if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
 echo "starting explorer"
 docker-compose -f docker-compose.yml up -d explorerdb.example.com explorer.mynetwork.com proms grafana
 fi
@@ -62,7 +62,7 @@ fi
 docker exec cli scripts/balancetrackerinit.sh
 
 # Executing SDK side testing scripts
-if [ ! -z "$2" ]
+if [ ! -z "$2" ] && [ "$2" != "-e" ];
 then
 echo "SDK test"
 docker exec cli mkdir /srv/test/
