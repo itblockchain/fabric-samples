@@ -19,7 +19,11 @@ echo "##### Balance Tracker: initializing chaincode #########"
 echo "#####################################################"
 echo
 
-peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")'
+# initializing with private store: you need to have the farm configured with private store !
+
+#peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")' --collections-config /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/priv_collection_config.json
+
+peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")' 
 
 sleep 120
 
