@@ -29,7 +29,7 @@ echo "##### Balance Tracker: init services #########"
 echo "#####################################################"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateService", "GetVersion","GetAuthor","GetDescription","GetServices","SetLogLevel","GetKey","CreateKey","GetAccount","CreateAccount","UpdateAccount","GetFlavor","CreateFlavor","UpdateFlavor","GetAction","GetToken","GetCertificate","IssueCertificate","RevokeCertificate","GetQueryResult", "GetTransaction","CreateTransaction"]}'
+peer chaincode invoke -o orderer.example.com:7050 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["InitServices", "[\"GetVersion\",\"GetAuthor\",\"GetDescription\",\"GetServices\",\"SetLogLevel\",\"GetKey\",\"CreateKey\",\"GetAccount\",\"CreateAccount\",\"UpdateAccount\",\"GetFlavor\",\"CreateFlavor\",\"UpdateFlavor\",\"GetAction\",\"GetToken\",\"GetCertificate\",\"IssueCertificate\",\"RevokeCertificate\",\"GetQueryResult\", \"GetTransaction\",\"CreateTransaction\"]", "{}"]}'
 
 sleep 5
 
