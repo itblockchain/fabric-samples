@@ -19,7 +19,11 @@ echo "##### Balance Tracker: initializing chaincode #########"
 echo "#####################################################"
 echo
 
-peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")'
+# initializing with private store: you need to have the farm configured with private store !
+
+#peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")' --collections-config /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/priv_collection_config.json
+
+peer chaincode instantiate -o orderer.example.com:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")' 
 
 sleep 120
 
@@ -29,7 +33,7 @@ echo "##### Balance Tracker: init services #########"
 echo "#####################################################"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["InitServices", "[\"GetVersion\",\"GetAuthor\",\"GetDescription\",\"GetServices\",\"SetLogLevel\",\"GetKey\",\"CreateKey\",\"GetAccount\",\"CreateAccount\",\"UpdateAccount\",\"GetFlavor\",\"CreateFlavor\",\"UpdateFlavor\",\"GetAction\",\"GetToken\",\"GetCertificate\",\"IssueCertificate\",\"RevokeCertificate\",\"GetQueryResult\", \"GetTransaction\",\"CreateTransaction\"]", "{}"]}'
+peer chaincode invoke -o orderer.example.com:7050 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["InitServices", "[\"GetVersion\",\"GetAuthor\",\"GetDescription\",\"GetServices\",\"SetLogLevel\",\"GetKey\",\"CreateKey\",\"GetAccount\",\"CreateAccount\",\"UpdateAccount\",\"GetFlavor\",\"CreateFlavor\",\"UpdateFlavor\",\"GetAction\",\"GetToken\",\"GetCertificate\",\"IssueCertificate\",\"RevokeCertificate\",\"GetQueryResult\", \"GetTransaction\",\"CreateTransaction\",\"GetSnapshot\"]", "{}"]}'
 
 sleep 5
 
@@ -204,11 +208,22 @@ echo
 
 peer chaincode query -C mychannel -n mycc -c '{"Args":["GetTransaction","transactionId1"]}'
 
+sleep 2
+
 echo
 echo "Test GetAction"
 echo
 
-peer chaincode query -C mychannel -n mycc -c '{"Args":["GetAction","transactionId1_a0"]}'
+peer chaincode query -C mychannel -n mycc -c '{"Args":["GetAction","1001"]}'
+
+sleep 2
+
+echo
+echo "Test GetSnapshot"
+echo
+
+peer chaincode query -C mychannel -n mycc -c '{"Args":["GetSnapshot","1001_sh"]}'
+
 
 sleep 2
 
@@ -219,6 +234,7 @@ echo
 peer chaincode query -C mychannel -n mycc -c '{"Args":["GetToken","newTokenId1"]}'
 
 sleep 2
+
 
 #TRANSACTION SERVICE: transfer transaction
 echo
