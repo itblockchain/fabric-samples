@@ -124,7 +124,7 @@ echo
 echo "Test CreateFlavor 1"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateFlavor","testFlavor1","true", "0", "{testtag1:testtagvalue1}", "[]" ]}'
+peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateFlavor","testFlavor1","true", "0", "{\"flvTag1\":\"flvTagValue1\"}", "[]" ]}'
 
 sleep 5
 
@@ -198,7 +198,7 @@ echo
 echo "Test Issue token 1"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId1\",\"sequence\":1,\"tags\":{},\"actions\":[{\"type\":\"issue\",\"id\":\"1001\",\"flavorId\":\"testFlavor1\",\"tokenId\":\"newTokenId1\",\"tokenCode\":\"tokenCode1\",\"destinationAccountId\":\"testAccount1\",\"amount\":\"1001\",\"tokenTags\":{},\"actionTags\":{}}]}"]}'
+peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId1\",\"sequence\":1,\"tags\":{\"trTag1\":\"trTagValue1\"},\"actions\":[{\"type\":\"issue\",\"id\":\"1001\",\"flavorId\":\"testFlavor1\",\"tokenId\":\"newTokenId1\",\"tokenCode\":\"tokenCode1\",\"destinationAccountId\":\"testAccount1\",\"amount\":\"1001\",\"tokenTags\":{\"tknTag1\":\"toknTagValue1\"},\"actionTags\":{\"actTag1\":\"actTagValue1\"}}]}"]}'
 
 sleep 5
 
@@ -245,7 +245,7 @@ echo
 echo "Test Transfer token 1 into token 2"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{ \"transactionId\": \"transactionId2\" , \"sequence\":1,            \"tags\":{}, \"actions\": [{\"type\": \"transfer\",\"tokenId\":\"newTokenId1\",\"newTokenId\": \"newTokenId2\", \"amount\": \"10\",\"destinationAccountId\":\"testAccount2\",\"actionTags\":{},\"tokenTags\":{} }]}"]}'
+peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{ \"transactionId\": \"transactionId2\" , \"sequence\":1,            \"tags\":{}, \"actions\": [{\"id\": \"act1\", \"type\": \"transfer\",\"tokenId\":\"newTokenId1\",\"newTokenId\": \"newTokenId2\", \"amount\": \"10\",\"destinationAccountId\":\"testAccount2\",\"actionTags\":{},\"tokenTags\":{} }]}"]}'
 
 sleep 5
 
@@ -266,7 +266,7 @@ echo
 echo "Test Retire from token 2"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId3\",\"sequence\":1,\"tags\":{}, \"actions\": [{\"type\": \"retire\",\"tokenId\": \"newTokenId2\",\"amount\": \"5\", \"actionTags\":{} }]}"]}'
+peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId3\",\"sequence\":1,\"tags\":{}, \"actions\": [{\"id\": \"act2\", \"type\": \"retire\",\"tokenId\": \"newTokenId2\",\"amount\": \"5\", \"actionTags\":{} }]}"]}'
 
 sleep 5
 
@@ -287,7 +287,7 @@ echo
 echo "Test Issue new token"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId4\",\"sequence\":1, \"tags\":{}, \"actions\":[{\"type\": \"issue\",\"id\": \"1001\",\"flavorId\": \"testFlavor1\", \"tokenId\": \"newTokenId3\",  \"tokenCode\":\"tokenCode1\", \"destinationAccountId\": \"testAccount1\",\"amount\": \"1001\", \"tokenTags\":{}, \"actionTags\": {} }]}"]}'
+peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId4\",\"sequence\":1, \"tags\":{}, \"actions\":[{\"id\": \"act3\", \"type\": \"issue\",\"id\": \"1055\",\"flavorId\": \"testFlavor1\", \"tokenId\": \"newTokenId8\",  \"tokenCode\":\"tokenCode1\", \"destinationAccountId\": \"testAccount1\",\"amount\": \"1001\", \"tokenTags\":{}, \"actionTags\": {} }]}"]}'
 
 sleep 5
 
@@ -295,7 +295,7 @@ echo
 echo "Test Merge tokens"
 echo
 
-peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId5\",\"sequence\":1,\"tags\":{}, \"actions\": [{\"type\": \"merge\",\"tokenIds\":[\"newTokenId3\",\"newTokenId1\"],\"newTokenId\": \"testTokenIdNew\",\"tokenTags\":{} }]}"]}'
+peer chaincode invoke -o orderer.example.com:7050 --waitForEvent --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n mycc --peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt -c '{"Args":["CreateTransaction","{\"transactionId\":\"transactionId5\",\"sequence\":1,\"tags\":{}, \"actions\": [{\"id\": \"act4\", \"type\": \"merge\",\"tokenIds\":[\"newTokenId8\",\"newTokenId1\"],\"newTokenId\": \"testTokenIdNew\",\"tokenTags\":{} }]}"]}'
 
 sleep 5
 
