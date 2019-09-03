@@ -112,7 +112,7 @@ items:
           - name: FABRIC_CA_SERVER_CA_KEYFILE
             value: /etc/hyperledger/fabric-ca-server-config/4239aa0dcd76daeeb8ba0cda701851d14504d31aad1b2ddddbac6a57365e497c_sk
           - name: FABRIC_CA_SERVER_CA_NAME
-            value: ca.example.com
+            value: ca-example-com
           image: hyperledger/fabric-ca
           name: ca-example-com
           ports:
@@ -168,7 +168,7 @@ items:
           - name: CORE_CHAINCODE_KEEPALIVE
             value: "10"
           - name: CORE_PEER_ADDRESS
-            value: peer0.org1.example.com:7051
+            value: peer0-org1-example-com:7051
           - name: CORE_PEER_ID
             value: cli
           - name: CORE_PEER_LOCALMSPID
@@ -456,22 +456,30 @@ items:
           - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
           - name: CORE_LEDGER_STATE_STATEDATABASE
             value: CouchDB
+          - name: CORE_PEER_ADDRESSAUTODETECT
+            value: "true"
           - name: CORE_PEER_ADDRESS
-            value: peer0.org1.example.com:7051
+            value: 0.0.0.0:7051
           - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
-            value: peer0.org1.example.com:7051
+            value: peer0-org1-example-com:7051
           - name: CORE_PEER_ID
-            value: peer0.org1.example.com
+            value: peer0-org1-example-com
           - name: CORE_PEER_LOCALMSPID
             value: Org1MSP
           - name: CORE_PEER_MSPCONFIGPATH
             value: /etc/hyperledger/msp/peer/
           - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
-            value: net_basic
+            value: "bridge"
           - name: CORE_VM_ENDPOINT
             value: unix:///host/var/run/docker.sock
           - name: FABRIC_LOGGING_SPEC
             value: info
+          - name: CORE_PEER_CHAINCODELISTENADDRESS
+            value: 0.0.0.0:7052
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /etc/hyperledger/msp/users/Admin@org1.example.com/msp
+          - name: GODEBUG
+            value: "netdns=go"
           image: hyperledger/fabric-peer
           name: peer0-org1-example-com
           ports:
