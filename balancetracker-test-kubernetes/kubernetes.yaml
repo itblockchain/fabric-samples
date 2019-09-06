@@ -125,7 +125,7 @@ items:
         volumes:
         - name: ca-claim0
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/crypto-config/peerOrganizations/org1.example.com/ca
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/ca
   status: {}
 - apiVersion: v1
   kind: PersistentVolumeClaim
@@ -204,16 +204,16 @@ items:
             path: /var/run/
         - name: cli-claim1
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/balancetracker-chaincode/
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/balancetracker-chaincode/
         - name: cli-claim2
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/crypto-config
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config
         - name: cli-claim3
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/balancetracker-chaincode/code
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/balancetracker-chaincode/code
         - name: cli-claim4
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/scripts
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/scripts
   status: {}
 - apiVersion: v1
   kind: PersistentVolumeClaim
@@ -368,13 +368,13 @@ items:
         volumes:
         - name: orderer-claim0
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/config
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/config
         - name: orderer-claim1
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com
         - name: orderer-claim2
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
   status: {}
 - apiVersion: v1
   kind: PersistentVolumeClaim
@@ -499,13 +499,13 @@ items:
             path: /var/run/ 
         - name: peer0-claim1
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
         - name: peer0-claim2
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/crypto-config/peerOrganizations/org1.example.com/users
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/users
         - name: peer0-claim3
           hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-network/config/ 
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/config 
   status: {}
 - apiVersion: v1
   kind: PersistentVolumeClaim

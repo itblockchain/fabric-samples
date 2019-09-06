@@ -61,12 +61,14 @@ echo "##########################################################"
 # Create new network
 kubectl create -f kubernetes.yaml
 
+sleep 120
+
 PODPEER0=$(kubectl get pod -l io.kompose.service=peer0 -o jsonpath="{.items[0].metadata.name}")
 
 echo $PODPEER0
 
 # Create the channel
-kubectl exec -it $PODPEER0 /opt/gopath/src/github.com/hyperledger/fabric/createchannel.sh
+kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/createchannel.sh
 
 # Starting hyperledger explorer: release 2
 #if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
@@ -79,7 +81,7 @@ PODCLI=$(kubectl get pod -l io.kompose.service=cli -o jsonpath="{.items[0].metad
 echo $PODCLI
 
 # Executing balancetracker initialization
-kubectl exec $PODCLI /scripts/balancetrackerinit.sh
+kubectl exec -it $PODCLI scripts/balancetrackerinit.sh
 
 # Executing SDK side testing scripts
 #if [ ! -z "$2" ] && [ "$2" != "-e" ];
