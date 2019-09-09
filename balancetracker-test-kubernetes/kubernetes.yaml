@@ -11,6 +11,7 @@ items:
       io.kompose.service: ca
     name: ca
   spec:
+    type: NodePort 
     ports:
     - name: "7054"
       port: 7054
@@ -49,6 +50,7 @@ items:
       io.kompose.service: orderer
     name: orderer
   spec:
+    type: NodePort 
     ports:
     - name: "7050"
       port: 7050
@@ -68,6 +70,7 @@ items:
       io.kompose.service: peer0
     name: peer0
   spec:
+    type: NodePort 
     ports:
     - name: "7051"
       port: 7051
