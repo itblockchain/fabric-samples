@@ -16,6 +16,7 @@ items:
     - name: "7054"
       port: 7054
       targetPort: 7054
+      nodePort: 31054
     selector:
       io.kompose.service: ca
   status:
@@ -55,6 +56,7 @@ items:
     - name: "7050"
       port: 7050
       targetPort: 7050
+      nodePort: 31050
     selector:
       io.kompose.service: orderer
   status:
@@ -75,9 +77,11 @@ items:
     - name: "7051"
       port: 7051
       targetPort: 7051
+      nodePort: 31051
     - name: "7053"
       port: 7053
       targetPort: 7053
+      nodePort: 31053
     selector:
       io.kompose.service: peer0
   status:
