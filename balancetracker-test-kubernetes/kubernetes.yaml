@@ -4,11 +4,12 @@ items:
   kind: Service
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: ca
+      balancetracker: ca
     name: ca
   spec:
     type: NodePort 
@@ -18,18 +19,19 @@ items:
       targetPort: 7054
       nodePort: 31054
     selector:
-      io.kompose.service: ca
+      balancetracker: ca
   status:
     loadBalancer: {}
 - apiVersion: v1
   kind: Service
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: couchdb
+      balancetracker: couchdb
     name: couchdb
   spec:
     ports:
@@ -37,18 +39,19 @@ items:
       port: 5984
       targetPort: 5984
     selector:
-      io.kompose.service: couchdb
+      balancetracker: couchdb
   status:
     loadBalancer: {}
 - apiVersion: v1
   kind: Service
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: orderer
+      balancetracker: orderer
     name: orderer
   spec:
     type: NodePort 
@@ -58,18 +61,19 @@ items:
       targetPort: 7050
       nodePort: 31050
     selector:
-      io.kompose.service: orderer
+      balancetracker: orderer
   status:
     loadBalancer: {}
 - apiVersion: v1
   kind: Service
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: peer0
+      balancetracker: peer0
     name: peer0
   spec:
     type: NodePort 
@@ -83,18 +87,19 @@ items:
       targetPort: 7053
       nodePort: 31053
     selector:
-      io.kompose.service: peer0
+      balancetracker: peer0
   status:
     loadBalancer: {}
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: ca
+      balancetracker: ca
     name: ca
   spec:
     replicas: 1
@@ -104,7 +109,7 @@ items:
       metadata:
         creationTimestamp: null
         labels:
-          io.kompose.service: ca
+          balancetracker: ca
       spec:
         containers:
         - args:
@@ -134,29 +139,16 @@ items:
           hostPath:
             path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/ca
   status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: ca-claim0
-    name: ca-claim0
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: cli
+      balancetracker: cli
     name: cli
   spec:
     replicas: 1
@@ -166,7 +158,7 @@ items:
       metadata:
         creationTimestamp: null
         labels:
-          io.kompose.service: cli
+          balancetracker: cli
       spec:
         containers:
         - args:
@@ -222,85 +214,16 @@ items:
           hostPath:
             path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/scripts
   status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: cli-claim0
-    name: cli-claim0
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: cli-claim1
-    name: cli-claim1
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: cli-claim2
-    name: cli-claim2
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: cli-claim3
-    name: cli-claim3
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: cli-claim4
-    name: cli-claim4
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: couchdb
+      balancetracker: couchdb
     name: couchdb
   spec:
     replicas: 1
@@ -309,7 +232,7 @@ items:
       metadata:
         creationTimestamp: null
         labels:
-          io.kompose.service: couchdb
+          balancetracker: couchdb
       spec:
         containers:
         - env:
@@ -326,11 +249,12 @@ items:
   kind: Deployment
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: orderer
+      balancetracker: orderer
     name: orderer
   spec:
     replicas: 1
@@ -340,7 +264,7 @@ items:
       metadata:
         creationTimestamp: null
         labels:
-          io.kompose.service: orderer
+          balancetracker: orderer
       spec:
         containers:
         - args:
@@ -383,57 +307,16 @@ items:
           hostPath:
             path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
   status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: orderer-claim0
-    name: orderer-claim0
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: orderer-claim1
-    name: orderer-claim1
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: orderer-claim2
-    name: orderer-claim2
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
     annotations:
-      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
-      kompose.version: 1.16.0 (0c01309)
+      author: Interticket
+      product: BalanceTracker
+      version: dev
     creationTimestamp: null
     labels:
-      io.kompose.service: peer0
+      balancetracker: peer0
     name: peer0
   spec:
     replicas: 1
@@ -443,7 +326,7 @@ items:
       metadata:
         creationTimestamp: null
         labels:
-          io.kompose.service: peer0
+          balancetracker: peer0
       spec:
         containers:
         - args:
@@ -513,62 +396,6 @@ items:
         - name: peer0-claim3
           hostPath:
             path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/config 
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: peer0-claim0
-    name: peer0-claim0
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: peer0-claim1
-    name: peer0-claim1
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: peer0-claim2
-    name: peer0-claim2
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
-  status: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    creationTimestamp: null
-    labels:
-      io.kompose.service: peer0-claim3
-    name: peer0-claim3
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 100Mi
   status: {}
 kind: List
 metadata: {}

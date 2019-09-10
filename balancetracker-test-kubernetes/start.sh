@@ -63,7 +63,7 @@ kubectl create -f kubernetes.yaml
 
 sleep 120
 
-PODPEER0=$(kubectl get pod -l io.kompose.service=peer0 -o jsonpath="{.items[0].metadata.name}")
+PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
 echo $PODPEER0
 
@@ -76,7 +76,7 @@ kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/createchannel.sh
 #docker-compose -f docker-compose.yml up -d explorerdb.example.com explorer.mynetwork.com proms #grafana
 #fi
 
-PODCLI=$(kubectl get pod -l io.kompose.service=cli -o jsonpath="{.items[0].metadata.name}")
+PODCLI=$(kubectl get pod -l balancetracker=cli -o jsonpath="{.items[0].metadata.name}")
 
 echo $PODCLI
 
