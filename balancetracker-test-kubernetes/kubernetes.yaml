@@ -90,6 +90,72 @@ items:
       balancetracker: peer0
   status:
     loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: explorer
+    name: explorer
+  spec:
+    type: NodePort 
+    ports:
+    - name: "8090"
+      port: 8090
+      targetPort: 8080
+      nodePort: 31080
+    selector:
+      balancetracker: explorer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: grafana
+    name: grafana
+  spec:
+    type: NodePort 
+    ports:
+    - name: "3000"
+      port: 3000
+      targetPort: 3000
+      nodePort: 31085
+    selector:
+      balancetracker: grafana
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: proms
+    name: proms
+  spec:
+    type: NodePort 
+    ports:
+    - name: "9090"
+      port: 9090
+      targetPort: 9090
+      nodePort: 31090
+    selector:
+      balancetracker: proms
+  status:
+    loadBalancer: {}
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
@@ -396,6 +462,321 @@ items:
         - name: peer0-claim3
           hostPath:
             path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/config 
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: walletstore-claim
+  spec:
+    storageClassName: standard
+    volumeName: walletstore-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    selector:
+      matchLabels:
+        name: walletstore-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: walletstore-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 100Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/walletstore
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: explorer
+    name: explorer
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: explorer
+      spec:
+        containers:
+        - args:
+          - sh
+          - -c
+          - sleep 16&& node /opt/explorer/main.js && tail -f /dev/null
+          env:
+          - name: DATABASE_HOST
+            value: explorerdb
+          - name: DATABASE_PASSWD
+            value: password
+          - name: DATABASE_USERNAME
+            value: hppoc
+          - name: DISCOVERY_AS_LOCALHOST
+            value: "false"
+          image: hyperledger/explorer:latest
+          name: explorer
+          ports:
+          - containerPort: 8080
+          resources: {}
+          volumeMounts:
+          - mountPath: /opt/explorer/app/platform/fabric/
+            name: explorer-claim0
+          - mountPath: /opt/explorer/app/platform/fabric/connection-profile
+            name: explorer-claim1
+          - mountPath: /tmp/crypto
+            name: explorer-claim2
+          - mountPath: /opt/wallet
+            name: walletstore-volume-claim
+        hostname: explorer
+        restartPolicy: Always
+        volumes:
+        - name: explorer-claim0
+          hostPath:
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/explorer/
+        - name: explorer-claim1
+          hostPath:
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/explorer/connection-profile
+        - name: explorer-claim2
+          hostPath:
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/
+        - name: walletstore-volume-claim
+          persistentVolumeClaim:
+            claimName: walletstore-claim
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: pgdata-claim
+  spec:
+    storageClassName: standard
+    volumeName: pgdata-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    selector:
+      matchLabels:
+        name: pgdata-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pgdata-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 100Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/pgdata
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: explorerdb
+    name: explorerdb
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: explorerdb
+      spec:
+        containers:
+        - env:
+          - name: DATABASE_DATABASE
+            value: fabricexplorer
+          - name: DATABASE_PASSWORD
+            value: password
+          - name: DATABASE_USERNAME
+            value: hppoc
+          image: hyperledger/explorer-db:latest
+          name: explorerdb
+          resources: {}
+          volumeMounts:
+          - mountPath: /docker-entrypoint-initdb.d/createdb.sh
+            name: explorerdb-claim0
+          - mountPath: /var/lib/postgresql/data
+            name: pgdata-volume-claim
+        hostname: explorerdb
+        restartPolicy: Always
+        volumes:
+        - name: explorerdb-claim0
+          hostPath:
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/app/persistence/fabric/postgreSQL/db/
+        - name: pgdata-volume-claim
+          persistentVolumeClaim:
+            claimName: pgdata-claim
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: granafa-volume-claim
+  spec:
+    storageClassName: standard
+    volumeName: grafana-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    selector:
+      matchLabels:
+        name: grafana-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: grafana-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 100Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/granafa-storage
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: grafana
+    name: grafana
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: grafana
+      spec:
+        containers:
+        - image: grafana/grafana:latest
+          name: grafana
+          ports:
+          - containerPort: 3000
+          resources: {}
+          volumeMounts:
+          - mountPath: /var/lib/grafana/dashboards/
+            name: grafana-claim0
+          - mountPath: /etc/grafana/provisioning
+            name: grafana-claim1
+          - mountPath: /var/lib/grafana
+            name: granafa-claim
+        restartPolicy: Always
+        volumes:
+        - name: grafana-claim0
+          hostPath:
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/app/platform/fabric/artifacts/operations/balance-transfer/balance-transfer/
+        - name: grafana-claim1
+          hostPath:
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/app/platform/fabric/artifacts/operations/grafana_conf/provisioning:/etc/grafana/provisioning
+        - name: granafa-claim
+          persistentVolumeClaim:
+            claimName: granafa-volume-claim
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: prom-volume-claim
+  spec:
+    storageClassName: standard
+    volumeName: prom-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    selector:
+      matchLabels:
+        name: prom-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: prom-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 100Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/prometheus-storage
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: proms
+    name: proms
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: proms
+      spec:
+        containers:
+        - image: prom/prometheus:latest
+          name: proms
+          ports:
+          - containerPort: 9090
+          resources: {}
+          volumeMounts:
+          - mountPath: /etc/prometheus/prometheus.yml
+            name: proms-claim0
+          - mountPath: /prometheus
+            name: prometheus-storage-claim
+        restartPolicy: Always
+        volumes:
+        - name: proms-claim0
+          hostPath:
+            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/app/platform/fabric/artifacts/operations/balance-transfer/prometheus.yml
+        - name: prometheus-storage-claim
+          persistentVolumeClaim:
+            claimName: prom-volume-claim
   status: {}
 kind: List
 metadata: {}
