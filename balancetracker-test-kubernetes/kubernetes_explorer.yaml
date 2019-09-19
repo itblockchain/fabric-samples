@@ -22,35 +22,6 @@ items:
       balancetracker: explorer
   status:
     loadBalancer: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: walletstore-claim
-  spec:
-    storageClassName: standard
-    volumeName: walletstore-volume
-    accessModes:
-      - ReadWriteMany
-    resources:
-      requests:
-        storage: 100Mi
-    selector:
-      matchLabels:
-        name: walletstore-volume
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: walletstore-volume
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/walletstore
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:

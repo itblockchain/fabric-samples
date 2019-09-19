@@ -45,7 +45,8 @@ echo "##########################################################"
 echo "##### Minikube start #########"
 echo "##########################################################"
 
-minikube start --mount "/fabric-samples:/data"
+#minikube start --mount "/fabric-samples:/data"
+minikube start
 
 echo "##########################################################"
 echo "##### Delete existing installation #########"
@@ -55,15 +56,21 @@ echo "##########################################################"
 # kubectl delete -f kubernetes_fabric.yaml
 # kubectl delete -f kubernetes_explorerdb.yaml
 # kubectl delete -f kubernetes_explorer.yaml
+# BE AWARE OF DATALOSS
+# kubectl delete -f kubernetes_fabricvolumes.yaml
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
+# Create volumes: BE AWARE OF DATALOSSE
+kubectl create -f kubernetes_fabricvolumes.yaml
+sleep 60
+
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
 
-sleep 120
+sleep 60
 
 PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
@@ -80,13 +87,13 @@ echo "##########################################################"
 echo ""
 echo "Start explorer DB"
     kubectl create -f kubernetes_explorerdb.yaml
-    sleep 60
+    sleep 45
 
     PODEXPLORERDB=$(kubectl get pod -l balancetracker=explorerdb -o jsonpath="{.items[0].metadata.name}")
 
     kubectl exec -it $PODEXPLORERDB ./createdb.sh
 
-    sleep 60
+    sleep 30
 
     echo "Start explorer"
 

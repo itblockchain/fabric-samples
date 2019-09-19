@@ -20,35 +20,6 @@ items:
       balancetracker: explorerdb
   status:
     loadBalancer: {}
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: pgdata-claim
-  spec:
-    storageClassName: standard
-    volumeName: pgdata-volume
-    accessModes:
-      - ReadWriteMany
-    resources:
-      requests:
-        storage: 100Mi
-    selector:
-      matchLabels:
-        name: pgdata-volume
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: pgdata-volume
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/pgdata
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
