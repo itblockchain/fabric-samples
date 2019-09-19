@@ -55,7 +55,8 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/h
 # Starting hyperledger explorer
 if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
 echo "starting explorer"
-docker-compose -f docker-compose.yml up -d explorerdb explorer proms grafana
+docker-compose -f docker-compose.yml up -d explorerdb explorer
+#docker-compose -f docker-compose.yml up -d explorerdb explorer proms grafana
 fi
 
 # Executing balancetracker initialization

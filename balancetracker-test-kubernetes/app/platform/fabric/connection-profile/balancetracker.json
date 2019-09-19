@@ -19,7 +19,7 @@
 	"channels": {
 		"mychannel": {
 			"peers": {
-				"peer0.org1.example.com": {}
+				"peer0": {}
 			},
 			"connection": {
 				"timeout": {
@@ -37,7 +37,7 @@
 			"mspid": "Org1MSP",
 			"fullpath": true,
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/cd96d5260ad4757551ed4a5a991e62130f8008a0bf996e4e4b84cd097a747fec_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/2ea5d6b91c481e41b0408ec99e1448322e824ded1448de4260a3a516bcf0fc47_sk"
 			},
 			"signedCert": {
 				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
@@ -47,21 +47,21 @@
           "mspid": "OrdererMSP",
           "adminPrivateKey": {
             "path":
-              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/cd96d5260ad4757551ed4a5a991e62130f8008a0bf996e4e4b84cd097a747fec_sk"
+              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/2ea5d6b91c481e41b0408ec99e1448322e824ded1448de4260a3a516bcf0fc47_sk"
           }
         }
 
 	},
 
 	"peers": {
-		"peer0.org1.example.com": {
-			"url": "grpc://peer0.org1.example.com:7051",
-			"eventUrl": "grpc://peer0.org1.example.com:7053"
+		"peer0": {
+			"url": "grpc://peer0:7051",
+			"eventUrl": "grpc://peer0:7053"
 		}
 	},
       "orderers": {
-        "orderer.example.com": {
-          "url": "grpc://orderer.example.com:7050"
+        "orderer": {
+          "url": "grpc://orderer:7050"
         }
       }
 }

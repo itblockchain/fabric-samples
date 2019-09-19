@@ -51,15 +51,17 @@ echo "##########################################################"
 echo "##### Delete existing installation #########"
 echo "##########################################################"
 
-# Shutting down exisiting network
-kubectl delete -f kubernetes.yaml
+# Shutting down exisiting networks
+# kubectl delete -f kubernetes_fabric.yaml
+# kubectl delete -f kubernetes_explorerdb.yaml
+# kubectl delete -f kubernetes_explorer.yaml
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
 # Create new network
-kubectl create -f kubernetes.yaml
+kubectl create -f kubernetes_fabric.yaml
 
 sleep 120
 
@@ -71,10 +73,25 @@ echo $PODPEER0
 kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/createchannel.sh
 
 # Starting hyperledger explorer: release 2
-#if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
-#echo "starting explorer"
-#docker-compose -f docker-compose.yml up -d explorerdb.example.com explorer.mynetwork.com proms #grafana
-#fi
+if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
+echo "##########################################################"
+echo "##### Starting Hyperledger Explorer #########"
+echo "##########################################################"
+echo ""
+echo "Start explorer DB"
+    kubectl create -f kubernetes_explorerdb.yaml
+    sleep 60
+
+    PODEXPLORERDB=$(kubectl get pod -l balancetracker=explorerdb -o jsonpath="{.items[0].metadata.name}")
+
+    kubectl exec -it $PODEXPLORERDB ./createdb.sh
+
+    sleep 60
+
+    echo "Start explorer"
+
+    kubectl create -f kubernetes_explorer.yaml
+fi
 
 PODCLI=$(kubectl get pod -l balancetracker=cli -o jsonpath="{.items[0].metadata.name}")
 
@@ -82,6 +99,7 @@ echo $PODCLI
 
 # Executing balancetracker initialization
 kubectl exec -it $PODCLI scripts/balancetrackerinit.sh
+
 
 # Executing SDK side testing scripts
 #if [ ! -z "$2" ] && [ "$2" != "-e" ];

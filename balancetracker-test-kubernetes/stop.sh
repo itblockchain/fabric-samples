@@ -8,5 +8,11 @@
 set -ev
 
 # Shut down the Docker containers that might be currently running.
-docker-compose -f docker-compose.yml down -v
+# Shutting down exisiting networks
+kubectl delete -f kubernetes_fabric.yaml
+kubectl delete -f kubernetes_explorerdb.yaml
+kubectl delete -f kubernetes_explorer.yaml
+
+# stop minikube
+minikube stop
 
