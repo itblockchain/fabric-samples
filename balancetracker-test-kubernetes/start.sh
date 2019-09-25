@@ -63,9 +63,24 @@ echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
-# Create volumes: BE AWARE OF DATALOSSE
+# enable firwall rules
+# gcloud compute firewall-rules create fabricexplorer1 --allow tcp:31080
+# gcloud compute firewall-rules create fabric1 --allow tcp:31050
+# gcloud compute firewall-rules create fabric2 --allow tcp:31051
+# gcloud compute firewall-rules create fabric3 --allow tcp:31053
+# gcloud compute firewall-rules create fabric4 --allow tcp:31054
+# gcloud compute firewall-rules create fabric5 --allow tcp:31055
+
+
+# Create volumes: BE AWARE OF DATALOSS
 kubectl create -f kubernetes_fabricvolumes.yaml
 sleep 60
+
+# create setup pod and configure mounts
+kubectl create -f kubernetes_setuppod.yaml
+
+# copy config files to the mapped directory
+kubectl cp . setuppod:/fabrichome
 
 # Create new network
 kubectl create -f kubernetes_fabric.yaml

@@ -11,7 +11,7 @@ items:
       - ReadWriteMany
     resources:
       requests:
-        storage: 100Mi
+        storage: 10Mi
     selector:
       matchLabels:
         name: pgdata-volume
@@ -23,7 +23,7 @@ items:
       type: local
   spec:
     capacity:
-      storage: 100Mi
+      storage: 10Mi
     storageClassName: standard
     accessModes:
       - ReadWriteMany
@@ -40,7 +40,7 @@ items:
       - ReadWriteMany
     resources:
       requests:
-        storage: 100Mi
+        storage: 10Mi
     selector:
       matchLabels:
         name: walletstore-volume
@@ -52,7 +52,7 @@ items:
       type: local
   spec:
     capacity:
-      storage: 100Mi
+      storage: 10Mi
     storageClassName: standard
     accessModes:
       - ReadWriteMany
@@ -69,7 +69,7 @@ items:
       - ReadWriteMany
     resources:
       requests:
-        storage: 100Mi
+        storage: 10Mi
     selector:
       matchLabels:
         name: fabrichome-volume
@@ -81,12 +81,12 @@ items:
       type: local
   spec:
     capacity:
-      storage: 100Mi
+      storage: 10Mi
     storageClassName: standard
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/ca/
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/
 kind: List
 metadata: {}
 

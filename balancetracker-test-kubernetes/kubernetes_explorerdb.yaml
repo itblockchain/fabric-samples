@@ -55,16 +55,17 @@ items:
           - containerPort: 5432
           resources: {}
           volumeMounts:
-          - mountPath: /docker-entrypoint-initdb.d/createdb.sh
+          - mountPath: /docker-entrypoint-initdb.d/
             name: explorerdb-claim0
-          - mountPath: /var/lib/postgresql/data
+            subPath: ./fabrichome/app/persistence/fabric/postgreSQL/db/
+          - mountPath: /var/lib/postgresql/data/
             name: pgdata-volume-claim
         hostname: explorerdb
         restartPolicy: Always
         volumes:
         - name: explorerdb-claim0
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/app/persistence/fabric/postgreSQL/db/
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
         - name: pgdata-volume-claim
           persistentVolumeClaim:
             claimName: pgdata-claim

@@ -90,7 +90,7 @@ items:
       balancetracker: peer0
   status:
     loadBalancer: {}
-- apiVersion: extensions/v1beta1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
@@ -103,6 +103,9 @@ items:
     name: ca
   spec:
     replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: ca
     strategy:
       type: Recreate
     template:
@@ -133,14 +136,14 @@ items:
           volumeMounts:
           - mountPath: /etc/hyperledger/fabric-ca-server-config
             name: ca-claim0
-#            subPath: ./crypto-config/peerOrganizations/org1.example.com/ca/
+            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/ca/
         restartPolicy: Always
         volumes:
         - name: ca-claim0
           persistentVolumeClaim:
             claimName: fabrichome-claim
   status: {}
-- apiVersion: extensions/v1beta1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
@@ -153,6 +156,9 @@ items:
     name: cli
   spec:
     replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: cli
     strategy:
       type: Recreate
     template:
@@ -190,12 +196,16 @@ items:
             name: cli-claim0
           - mountPath: /opt/gopath/src/github.com/
             name: cli-claim1
+            subPath: ./fabrichome/balancetracker-chaincode/
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-            name: cli-claim2
+            name: cli-claim1
+            subPath: ./fabrichome/crypto-config/
           - mountPath: /opt/gopath/src/github.com/chaincode/
-            name: cli-claim3
+            name: cli-claim1
+            subPath: ./fabrichome/balancetracker-chaincode/code/
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-            name: cli-claim4
+            name: cli-claim1
+            subPath: ./fabrichome/scripts/
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         restartPolicy: Always
         volumes:
@@ -203,19 +213,19 @@ items:
           hostPath:
             path: /var/run/
         - name: cli-claim1
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/balancetracker-chaincode/
-        - name: cli-claim2
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config
-        - name: cli-claim3
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/balancetracker-chaincode/code
-        - name: cli-claim4
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/scripts
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+#        - name: cli-claim2
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: cli-claim3
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: cli-claim4
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
   status: {}
-- apiVersion: extensions/v1beta1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
@@ -229,6 +239,9 @@ items:
   spec:
     replicas: 1
     strategy: {}
+    selector:
+      matchLabels:
+        balancetracker: couchdb
     template:
       metadata:
         creationTimestamp: null
@@ -246,7 +259,7 @@ items:
           resources: {}
         restartPolicy: Always
   status: {}
-- apiVersion: extensions/v1beta1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
@@ -259,6 +272,9 @@ items:
     name: orderer
   spec:
     replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: orderer
     strategy:
       type: Recreate
     template:
@@ -291,24 +307,27 @@ items:
           volumeMounts:
           - mountPath: /etc/hyperledger/configtx
             name: orderer-claim0
+            subPath: ./fabrichome/config/
           - mountPath: /etc/hyperledger/msp/orderer
-            name: orderer-claim1
+            name: orderer-claim0
+            subPath: ./fabrichome/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/
           - mountPath: /etc/hyperledger/msp/peerOrg1
-            name: orderer-claim2
+            name: orderer-claim0
+            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
         restartPolicy: Always
         volumes:
         - name: orderer-claim0
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/config
-        - name: orderer-claim1
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com
-        - name: orderer-claim2
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+#        - name: orderer-claim1
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: orderer-claim2
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
   status: {}
-- apiVersion: extensions/v1beta1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
@@ -321,6 +340,9 @@ items:
     name: peer0
   spec:
     replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: peer0
     strategy:
       type: Recreate
     template:
@@ -378,10 +400,13 @@ items:
             name: peer0-claim0
           - mountPath: /etc/hyperledger/msp/peer
             name: peer0-claim1
+            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/
           - mountPath: /etc/hyperledger/msp/users
-            name: peer0-claim2
+            name: peer0-claim1
+            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/users/
           - mountPath: /etc/hyperledger/configtx
-            name: peer0-claim3
+            name: peer0-claim1
+            subPath: ./fabrichome/config/
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric
         restartPolicy: Always
         volumes:
@@ -389,14 +414,14 @@ items:
           hostPath:
             path: /var/run/ 
         - name: peer0-claim1
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
-        - name: peer0-claim2
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/users
-        - name: peer0-claim3
-          hostPath:
-            path: /hosthome/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/config 
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+#        - name: peer0-claim2
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: peer0-claim3
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
   status: {}
 kind: List
 metadata: {}
