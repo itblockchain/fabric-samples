@@ -20,7 +20,7 @@ items:
       balancetracker: explorerdb
   status:
     loadBalancer: {}
-- apiVersion: extensions/v1beta1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
@@ -33,6 +33,9 @@ items:
     name: explorerdb
   spec:
     replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: explorerdb
     strategy:
       type: Recreate
     template:
@@ -57,7 +60,7 @@ items:
           volumeMounts:
           - mountPath: /docker-entrypoint-initdb.d/
             name: explorerdb-claim0
-            subPath: ./fabrichome/app/persistence/fabric/postgreSQL/db/
+            subPath: ./balancetracker-test-kubernetes/app/persistence/fabric/postgreSQL/db/
           - mountPath: /var/lib/postgresql/data/
             name: pgdata-volume-claim
         hostname: explorerdb

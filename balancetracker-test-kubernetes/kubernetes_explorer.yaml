@@ -22,7 +22,7 @@ items:
       balancetracker: explorer
   status:
     loadBalancer: {}
-- apiVersion: extensions/v1beta1
+- apiVersion: apps/v1
   kind: Deployment
   metadata:
     annotations:
@@ -35,6 +35,9 @@ items:
     name: explorer
   spec:
     replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: explorer
     strategy:
       type: Recreate
     template:
@@ -65,13 +68,13 @@ items:
           volumeMounts:
           - mountPath: /opt/explorer/app/platform/fabric/
             name: explorer-claim0
-            subPath: ./fabrichome/app/platform/fabric/
+            subPath: ./balancetracker-test-kubernetes/app/platform/fabric/
           - mountPath: /opt/explorer/app/platform/fabric/connection-profile
             name: explorer-claim0
-            subPath: ./fabrichome/app/platform/fabric/connection-profile/
+            subPath: ./balancetracker-test-kubernetes/app/platform/fabric/connection-profile/
           - mountPath: /tmp/crypto
             name: explorer-claim0
-            subPath: ./fabrichome/crypto-config/
+            subPath: ./balancetracker-test-kubernetes/crypto-config/
           - mountPath: /opt/wallet
             name: walletstore-volume-claim
         hostname: explorer

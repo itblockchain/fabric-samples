@@ -196,16 +196,16 @@ items:
             name: cli-claim0
           - mountPath: /opt/gopath/src/github.com/
             name: cli-claim1
-            subPath: ./fabrichome/balancetracker-chaincode/
+            subPath: ./balancetracker-test-kubernetes/balancetracker-chaincode/
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
             name: cli-claim1
-            subPath: ./fabrichome/crypto-config/
+            subPath: ./balancetracker-test-kubernetes/crypto-config/
           - mountPath: /opt/gopath/src/github.com/chaincode/
             name: cli-claim1
-            subPath: ./fabrichome/balancetracker-chaincode/code/
+            subPath: ./balancetracker-test-kubernetes/balancetracker-chaincode/code/
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
             name: cli-claim1
-            subPath: ./fabrichome/scripts/
+            subPath: ./balancetracker-test-kubernetes/scripts/
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         restartPolicy: Always
         volumes:
@@ -307,13 +307,13 @@ items:
           volumeMounts:
           - mountPath: /etc/hyperledger/configtx
             name: orderer-claim0
-            subPath: ./fabrichome/config/
+            subPath: ./balancetracker-test-kubernetes/config/
           - mountPath: /etc/hyperledger/msp/orderer
             name: orderer-claim0
-            subPath: ./fabrichome/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/
+            subPath: ./balancetracker-test-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/
           - mountPath: /etc/hyperledger/msp/peerOrg1
             name: orderer-claim0
-            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
+            subPath: ./balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
         restartPolicy: Always
         volumes:
@@ -400,13 +400,13 @@ items:
             name: peer0-claim0
           - mountPath: /etc/hyperledger/msp/peer
             name: peer0-claim1
-            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/
+            subPath: ./balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/
           - mountPath: /etc/hyperledger/msp/users
             name: peer0-claim1
-            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/users/
+            subPath: ./balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/users/
           - mountPath: /etc/hyperledger/configtx
             name: peer0-claim1
-            subPath: ./fabrichome/config/
+            subPath: ./balancetracker-test-kubernetes/config/
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric
         restartPolicy: Always
         volumes:

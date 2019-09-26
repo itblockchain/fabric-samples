@@ -25,7 +25,7 @@ echo
 
 peer chaincode instantiate -o orderer:7050 -C mychannel -n mycc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")' 
 
-sleep 120
+sleep 180
 
 echo
 echo "#####################################################"
