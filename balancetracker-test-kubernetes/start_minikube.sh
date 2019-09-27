@@ -61,18 +61,18 @@ echo "deleting exisiting volumes: BE AWARE OF DATALOSS"
 # kubectl delete -f kubernetes_fabric.yaml
 # kubectl delete -f kubernetes_explorerdb.yaml
 # kubectl delete -f kubernetes_explorer.yaml
-# sleep 60
+ sleep 60
 
 # BE AWARE OF DATALOSS
 # kubectl delete -f kubernetes_fabricvolumes.yaml
-# sleep 60
+ sleep 60
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
 # Create volumes: BE AWARE OF DATALOSS
-# kubectl create -f kubernetes_fabricvolumes.yaml
+kubectl create -f kubernetes_fabricvolumes.yaml
 sleep 60
 
 # create setup pod and configure mounts

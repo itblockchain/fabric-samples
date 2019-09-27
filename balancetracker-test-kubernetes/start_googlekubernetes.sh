@@ -14,6 +14,11 @@ echo " ___) |   | |    / ___ \  |  _ <    | |  "
 echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
 echo
 
+# Setup google credentials to kubectl
+# gcloud container clusters get-credentials balancetracker-dev --region europe-west3-c
+# Check if current config is set
+# kubectl config current-context
+
 echo "##########################################################"
 echo "##### Preparing java files #########"
 echo "##########################################################"
@@ -24,6 +29,15 @@ echo "Client File path:"
 echo $2
 echo "with explorer"
 echo $3
+
+
+# configure firwall rules: only at first installation
+# gcloud compute firewall-rules create fabricexplorer1 --allow tcp:31080
+# gcloud compute firewall-rules create fabric1 --allow tcp:31050
+# gcloud compute firewall-rules create fabric2 --allow tcp:31051
+# gcloud compute firewall-rules create fabric3 --allow tcp:31053
+# gcloud compute firewall-rules create fabric4 --allow tcp:31054
+# gcloud compute firewall-rules create fabric5 --allow tcp:31055
 
 echo "##########################################################"
 echo "##### Copy files: analyze input parameters #########"
@@ -36,41 +50,21 @@ cp $1/settings.gradle balancetracker-chaincode/code
 rm -rf balancetracker-chaincode/code/test
 
 echo "##########################################################"
-echo "##### Minikube stop #########"
-echo "##########################################################"
-
-minikube stop
-
-echo "##########################################################"
-echo "##### Minikube start #########"
-echo "##########################################################"
-
-#minikube start --mount "/fabric-samples:/data"
-minikube start
-
-echo "##########################################################"
 echo "##### Delete existing installation #########"
 echo "##########################################################"
 
 # Shutting down exisiting networks
-# kubectl delete -f kubernetes_fabric.yaml
-# kubectl delete -f kubernetes_explorerdb.yaml
-# kubectl delete -f kubernetes_explorer.yaml
+ kubectl delete -f kubernetes_setuppod.yaml
+ kubectl delete -f kubernetes_fabric.yaml
+ kubectl delete -f kubernetes_explorerdb.yaml
+ kubectl delete -f kubernetes_explorer.yaml
 # BE AWARE OF DATALOSS
-# kubectl delete -f kubernetes_fabricvolumes.yaml
+ kubectl delete -f kubernetes_fabricvolumes.yaml
+sleep 60
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
-
-# enable firwall rules
-# gcloud compute firewall-rules create fabricexplorer1 --allow tcp:31080
-# gcloud compute firewall-rules create fabric1 --allow tcp:31050
-# gcloud compute firewall-rules create fabric2 --allow tcp:31051
-# gcloud compute firewall-rules create fabric3 --allow tcp:31053
-# gcloud compute firewall-rules create fabric4 --allow tcp:31054
-# gcloud compute firewall-rules create fabric5 --allow tcp:31055
-
 
 # Create volumes: BE AWARE OF DATALOSS
 kubectl create -f kubernetes_fabricvolumes.yaml
@@ -78,14 +72,15 @@ sleep 60
 
 # create setup pod and configure mounts
 kubectl create -f kubernetes_setuppod.yaml
+sleep 60
 
 # copy config files to the mapped directory
-kubectl cp . setuppod:/fabrichome
+kubectl cp /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes setuppod:/fabrichome
 
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
 
-sleep 60
+sleep 90
 
 PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 

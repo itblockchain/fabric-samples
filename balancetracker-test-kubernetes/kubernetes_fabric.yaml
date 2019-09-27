@@ -136,7 +136,7 @@ items:
           volumeMounts:
           - mountPath: /etc/hyperledger/fabric-ca-server-config
             name: ca-claim0
-            subPath: ./fabrichome/crypto-config/peerOrganizations/org1.example.com/ca/
+            subPath: ./balancetracker-test-kubernetes/crypto-config/peerOrganizations/org1.example.com/ca/
         restartPolicy: Always
         volumes:
         - name: ca-claim0
