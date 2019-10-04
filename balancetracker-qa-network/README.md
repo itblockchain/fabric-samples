@@ -2,9 +2,9 @@
 
 Author: Interticket
 
-The script creates a simple preconfigured qa environment for the BalanceTracker Interticket application. 
+The script creates a simple preconfigured test / dev environment for the BalanceTracker Interticket application. 
 The created peers:
- - 2 endorsement peers
+ - endorsement peer
  - ordered
  - certificate authority
  - CLI

@@ -39,7 +39,7 @@ echo "##########################################################"
 docker-compose -f docker-compose.yml down
 
 # Starting hyperledger fabric
-docker-compose -f docker-compose.yml up -d ca.example.com orderer.example.com peer0.org1.example.com couchdb cli
+docker-compose -f docker-compose.yml up -d ca orderer peer0 peer1 couchdb cli
 
 # wait for Hyperledger Fabric to start
 # incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
@@ -48,14 +48,25 @@ export FABRIC_START_TIMEOUT=30
 sleep ${FABRIC_START_TIMEOUT}
 
 # Create the channel
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel create -o orderer.example.com:7050 -c mychannel -f /etc/hyperledger/configtx/channel.tx
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0 peer channel create -o orderer:7050 -c bcchannel -f /etc/hyperledger/configtx/channel.tx
 # Join peer0.org1.example.com to the channel.
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel join -b mychannel.block
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0 peer channel join -b bcchannel.block
+
+docker cp peer0:/opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block bcchannel.block
+
+docker cp bcchannel.block peer1:/opt/gopath/src/github.com/hyperledger/fabric/
+
+# Join peer0.org1.example.com to the channel.
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer1 peer channel join -b bcchannel.block
+
+# Update channels with anchor peer
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0 peer channel update -o orderer:7050 -c bcchannel -f /etc/hyperledger/configtx/Org1MSPanchors.tx 
 
 # Starting hyperledger explorer
 if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
 echo "starting explorer"
-docker-compose -f docker-compose.yml up -d explorerdb.example.com explorer.mynetwork.com proms grafana
+docker-compose -f docker-compose.yml up -d explorerdb explorer
+#docker-compose -f docker-compose.yml up -d explorerdb explorer proms grafana
 fi
 
 # Executing balancetracker initialization
