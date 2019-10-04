@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"client": {
 		"tlsEnable": false,
-		"adminUser": "admin",
-		"adminPassword": "adminpw",
+		"adminUser": "interticket",
+		"adminPassword": "Blockchain4ever",
 		"enableAuthentication": false,
 		"organization": "Org1MSP",
 		"connection": {
@@ -17,9 +17,10 @@
 		}
 	},
 	"channels": {
-		"mychannel": {
+		"bcchannel": {
 			"peers": {
-				"peer0": {}
+				"peer0": {},
+				"peer1": {}
 			},
 			"connection": {
 				"timeout": {
@@ -37,7 +38,7 @@
 			"mspid": "Org1MSP",
 			"fullpath": true,
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/2ea5d6b91c481e41b0408ec99e1448322e824ded1448de4260a3a516bcf0fc47_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/9066e5644cdd082db9b4337ca74246e11de9adf7dcb2af719f58833fbe465d9b_sk"
 			},
 			"signedCert": {
 				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
@@ -47,7 +48,7 @@
           "mspid": "OrdererMSP",
           "adminPrivateKey": {
             "path":
-              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/2ea5d6b91c481e41b0408ec99e1448322e824ded1448de4260a3a516bcf0fc47_sk"
+              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/9066e5644cdd082db9b4337ca74246e11de9adf7dcb2af719f58833fbe465d9b_sk"
           }
         }
 
@@ -57,6 +58,10 @@
 		"peer0": {
 			"url": "grpc://peer0:7051",
 			"eventUrl": "grpc://peer0:7053"
+		},
+		"peer1": {
+			"url": "grpc://peer1:7051",
+			"eventUrl": "grpc://peer1:7053"
 		}
 	},
       "orderers": {
