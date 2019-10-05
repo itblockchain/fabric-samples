@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"client": {
 		"tlsEnable": false,
-		"adminUser": "interticket",
+		"adminUser": "Interticket",
 		"adminPassword": "Blockchain4ever",
 		"enableAuthentication": false,
 		"organization": "Org1MSP",
