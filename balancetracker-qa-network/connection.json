@@ -31,7 +31,8 @@
         "Org1": {
             "mspid": "Org1MSP",
             "peers": [
-                "peer0"
+                "peer0",
+                "peer1"
             ],
             "certificateAuthorities": [
                 "ca"
@@ -39,8 +40,14 @@
         }
     },
     "orderers": {
-        "orderer": {
+        "orderer1": {
             "url": "grpc://localhost:7050"
+        },        
+        "orderer2": {
+            "url": "grpc://localhost:7060"
+        },        
+        "orderer3": {
+            "url": "grpc://localhost:7070"
         }
     },
     "peers": {

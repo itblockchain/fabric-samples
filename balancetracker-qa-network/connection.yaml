@@ -23,6 +23,7 @@ organizations:
         mspid: Org1MSP
         peers:
         - peer0
+        - peer1
         certificateAuthorities:
         - ca
 orderers:
