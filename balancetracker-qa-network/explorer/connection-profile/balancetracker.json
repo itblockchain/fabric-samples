@@ -38,7 +38,7 @@
 			"mspid": "Org1MSP",
 			"fullpath": true,
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/9066e5644cdd082db9b4337ca74246e11de9adf7dcb2af719f58833fbe465d9b_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/877c05b9e712dcdef966913404bbb06cf44fdd369e0dd575062f6c38595be08e_sk"
 			},
 			"signedCert": {
 				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
@@ -48,10 +48,12 @@
           "mspid": "OrdererMSP",
           "adminPrivateKey": {
             "path":
-              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/9066e5644cdd082db9b4337ca74246e11de9adf7dcb2af719f58833fbe465d9b_sk"
-          }
+              "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/8b0670a2f424066347c768ee101b6ac871b325defe66d9b42aecd73125deea60_sk"
+          },
+		  "signedCert": {
+			  "path": "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem"
+		  }
         }
-
 	},
 
 	"peers": {
@@ -80,6 +82,12 @@
       "orderers": {
         "orderer": {
           "url": "grpc://orderer:7050"
-        }
+		},
+		"orderer1": {
+			"url": "grpc://orderer1:7050"
+		  },
+		"orderer2": {
+			"url": "grpc://orderer2:7050"
+		  }  
       }
 }
