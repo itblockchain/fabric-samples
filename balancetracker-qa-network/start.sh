@@ -47,6 +47,9 @@ export FABRIC_START_TIMEOUT=30
 #echo ${FABRIC_START_TIMEOUT}
 sleep ${FABRIC_START_TIMEOUT}
 
+# Create admin users
+docker exec ca scripts/users.sh
+
 # Create the channel
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0 peer channel create -o orderer:7050 -c bcchannel -f /etc/hyperledger/configtx/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 # Join peer0.org1.example.com to the channel.
