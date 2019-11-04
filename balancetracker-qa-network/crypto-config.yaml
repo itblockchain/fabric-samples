@@ -46,10 +46,17 @@ PeerOrgs:
     #                 Org.Domain, respectively.
     # ---------------------------------------------------------------------------
     # Specs:
-    #   - Hostname: foo # implicitly "foo.org1.example.com"
-    #     CommonName: foo27.org5.example.com # overrides Hostname-based FQDN set above
-    #   - Hostname: bar
-    #   - Hostname: baz
+    #  - Hostname: peer0
+    #    CommonName: peer0.example.com
+    #    SANS: 
+    #      - "localhost"
+    #      - "127.0.0.1"
+    #  
+    #  - Hostname: peer1
+    #    CommonName: peer1.example.com
+    #    SANS: 
+    #      - "localhost"
+    #      - "127.0.0.1"
     # ---------------------------------------------------------------------------
     # "Template"
     # ---------------------------------------------------------------------------

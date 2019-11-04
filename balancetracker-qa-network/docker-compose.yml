@@ -21,10 +21,10 @@ services:
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/11c3e47c11691c5e4c63d822e625c5f20fd950b397c6bbac2e5e6bb4e6339d86_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/11c3e47c11691c5e4c63d822e625c5f20fd950b397c6bbac2e5e6bb4e6339d86_sk -b Interticket:Blockchain4ever'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk -b Interticket:Blockchain4ever'
     volumes:
       - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
       - ./scripts/:/scripts
@@ -125,7 +125,6 @@ services:
     networks:
       - basic
 
-
   peer0:
     container_name: peer0
     image: hyperledger/fabric-peer
@@ -152,6 +151,10 @@ services:
       - CORE_CHAINCODE_DEPLOYTIMEOUT=300s
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0:7051
+      #- CORE_PEER_TLS_CLIENTAUTHREQUIRED=true
+      #- CORE_PEER_TLS_CLIENTROOTCAS_FILES=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+      #- CORE_PEER_TLS_CLIENTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+      #- CORE_PEER_TLS_CLIENTKEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
@@ -202,6 +205,10 @@ services:
       - CORE_CHAINCODE_DEPLOYTIMEOUT=300s
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1:7051
+      #- CORE_PEER_TLS_CLIENTAUTHREQUIRED=true
+      #- CORE_PEER_TLS_CLIENTROOTCAS_FILES=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
+      #- CORE_PEER_TLS_CLIENTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.crt
+      #- CORE_PEER_TLS_CLIENTKEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.key
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.key
