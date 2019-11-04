@@ -1,0 +1,970 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: ca
+    name: ca
+  spec:
+    ports:
+    - name: "7054"
+      port: 7054
+      targetPort: 7054
+    selector:
+      io.kompose.service: ca
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: couchdb
+    name: couchdb
+  spec:
+    ports:
+    - name: "5984"
+      port: 5984
+      targetPort: 5984
+    selector:
+      io.kompose.service: couchdb
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: explorer
+    name: explorer
+  spec:
+    ports:
+    - name: "8090"
+      port: 8090
+      targetPort: 8080
+    selector:
+      io.kompose.service: explorer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: grafana
+    name: grafana
+  spec:
+    ports:
+    - name: "3000"
+      port: 3000
+      targetPort: 3000
+    selector:
+      io.kompose.service: grafana
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: orderer
+    name: orderer
+  spec:
+    ports:
+    - name: "7050"
+      port: 7050
+      targetPort: 7050
+    selector:
+      io.kompose.service: orderer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: peer0
+    name: peer0
+  spec:
+    ports:
+    - name: "7051"
+      port: 7051
+      targetPort: 7051
+    - name: "7053"
+      port: 7053
+      targetPort: 7053
+    selector:
+      io.kompose.service: peer0
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: proms
+    name: proms
+  spec:
+    ports:
+    - name: "9090"
+      port: 9090
+      targetPort: 9090
+    selector:
+      io.kompose.service: proms
+  status:
+    loadBalancer: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: ca
+    name: ca
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: ca
+      spec:
+        containers:
+        - args:
+          - sh
+          - -c
+          - fabric-ca-server start -b admin:adminpw
+          env:
+          - name: FABRIC_CA_HOME
+            value: /etc/hyperledger/fabric-ca-server
+          - name: FABRIC_CA_SERVER_CA_CERTFILE
+            value: /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
+          - name: FABRIC_CA_SERVER_CA_KEYFILE
+            value: /etc/hyperledger/fabric-ca-server-config/4239aa0dcd76daeeb8ba0cda701851d14504d31aad1b2ddddbac6a57365e497c_sk
+          - name: FABRIC_CA_SERVER_CA_NAME
+            value: ca
+          image: hyperledger/fabric-ca
+          name: ca
+          ports:
+          - containerPort: 7054
+          resources: {}
+          volumeMounts:
+          - mountPath: /etc/hyperledger/fabric-ca-server-config
+            name: ca-claim0
+        restartPolicy: Always
+        volumes:
+        - name: ca-claim0
+          persistentVolumeClaim:
+            claimName: ca-claim0
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: ca-claim0
+    name: ca-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: cli
+    name: cli
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: cli
+      spec:
+        containers:
+        - args:
+          - /bin/bash
+          env:
+          - name: CORE_CHAINCODE_KEEPALIVE
+            value: "10"
+          - name: CORE_PEER_ADDRESS
+            value: peer0:7051
+          - name: CORE_PEER_ID
+            value: cli
+          - name: CORE_PEER_LOCALMSPID
+            value: Org1MSP
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+          - name: CORE_VM_ENDPOINT
+            value: unix:///host/var/run/docker.sock
+          - name: FABRIC_LOGGING_SPEC
+            value: info
+          - name: GOPATH
+            value: /opt/gopath
+          image: hyperledger/fabric-tools
+          name: cli
+          resources: {}
+          tty: true
+          volumeMounts:
+          - mountPath: /host/var/run/
+            name: cli-claim0
+          - mountPath: /opt/gopath/src/github.com/
+            name: cli-claim1
+          - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+            name: cli-claim2
+          - mountPath: /opt/gopath/src/github.com/chaincode/
+            name: cli-claim3
+          - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+            name: cli-claim4
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        restartPolicy: Always
+        volumes:
+        - name: cli-claim0
+          persistentVolumeClaim:
+            claimName: cli-claim0
+        - name: cli-claim1
+          persistentVolumeClaim:
+            claimName: cli-claim1
+        - name: cli-claim2
+          persistentVolumeClaim:
+            claimName: cli-claim2
+        - name: cli-claim3
+          persistentVolumeClaim:
+            claimName: cli-claim3
+        - name: cli-claim4
+          persistentVolumeClaim:
+            claimName: cli-claim4
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: cli-claim0
+    name: cli-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: cli-claim1
+    name: cli-claim1
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: cli-claim2
+    name: cli-claim2
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: cli-claim3
+    name: cli-claim3
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: cli-claim4
+    name: cli-claim4
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: couchdb
+    name: couchdb
+  spec:
+    replicas: 1
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: couchdb
+      spec:
+        containers:
+        - env:
+          - name: COUCHDB_PASSWORD
+          - name: COUCHDB_USER
+          image: hyperledger/fabric-couchdb
+          name: couchdb
+          ports:
+          - containerPort: 5984
+          resources: {}
+        restartPolicy: Always
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: explorer
+    name: explorer
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: explorer
+      spec:
+        containers:
+        - args:
+          - sh
+          - -c
+          - sleep 16&& node /opt/explorer/main.js && tail -f /dev/null
+          env:
+          - name: DATABASE_HOST
+            value: explorerdb
+          - name: DATABASE_PASSWD
+            value: password
+          - name: DATABASE_USERNAME
+            value: hppoc
+          - name: DISCOVERY_AS_LOCALHOST
+            value: "false"
+          image: hyperledger/explorer:latest
+          name: explorer
+          ports:
+          - containerPort: 8080
+          resources: {}
+          volumeMounts:
+          - mountPath: /opt/explorer/app/platform/fabric/config.json
+            name: explorer-claim0
+          - mountPath: /opt/explorer/app/platform/fabric/connection-profile
+            name: explorer-claim1
+          - mountPath: /tmp/crypto
+            name: explorer-claim2
+          - mountPath: /opt/wallet
+            name: walletstore
+        hostname: explorer
+        restartPolicy: Always
+        volumes:
+        - name: explorer-claim0
+          persistentVolumeClaim:
+            claimName: explorer-claim0
+        - name: explorer-claim1
+          persistentVolumeClaim:
+            claimName: explorer-claim1
+        - name: explorer-claim2
+          persistentVolumeClaim:
+            claimName: explorer-claim2
+        - name: walletstore
+          persistentVolumeClaim:
+            claimName: walletstore
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: explorer-claim0
+    name: explorer-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: explorer-claim1
+    name: explorer-claim1
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: explorer-claim2
+    name: explorer-claim2
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: walletstore
+    name: walletstore
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: explorerdb
+    name: explorerdb
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: explorerdb
+      spec:
+        containers:
+        - env:
+          - name: DATABASE_DATABASE
+            value: fabricexplorer
+          - name: DATABASE_PASSWORD
+            value: password
+          - name: DATABASE_USERNAME
+            value: hppoc
+          image: hyperledger/explorer-db:latest
+          name: explorerdb
+          resources: {}
+          volumeMounts:
+          - mountPath: /docker-entrypoint-initdb.d/createdb.sh
+            name: explorerdb-claim0
+          - mountPath: /var/lib/postgresql/data
+            name: pgdata
+        hostname: explorerdb
+        restartPolicy: Always
+        volumes:
+        - name: explorerdb-claim0
+          persistentVolumeClaim:
+            claimName: explorerdb-claim0
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: pgdata
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: explorerdb-claim0
+    name: explorerdb-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: pgdata
+    name: pgdata
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: grafana
+    name: grafana
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: grafana
+      spec:
+        containers:
+        - image: grafana/grafana:latest
+          name: grafana
+          ports:
+          - containerPort: 3000
+          resources: {}
+          volumeMounts:
+          - mountPath: /var/lib/grafana/dashboards/mydashboard.json
+            name: grafana-claim0
+          - mountPath: /etc/grafana/provisioning
+            name: grafana-claim1
+          - mountPath: /var/lib/grafana
+            name: grafana-storage
+        restartPolicy: Always
+        volumes:
+        - name: grafana-claim0
+          persistentVolumeClaim:
+            claimName: grafana-claim0
+        - name: grafana-claim1
+          persistentVolumeClaim:
+            claimName: grafana-claim1
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-storage
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: grafana-claim0
+    name: grafana-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: grafana-claim1
+    name: grafana-claim1
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: grafana-storage
+    name: grafana-storage
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: orderer
+    name: orderer
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: orderer
+      spec:
+        containers:
+        - args:
+          - orderer
+          env:
+          - name: FABRIC_LOGGING_SPEC
+            value: info
+          - name: ORDERER_GENERAL_GENESISFILE
+            value: /etc/hyperledger/configtx/genesis.block
+          - name: ORDERER_GENERAL_GENESISMETHOD
+            value: file
+          - name: ORDERER_GENERAL_LISTENADDRESS
+            value: 0.0.0.0
+          - name: ORDERER_GENERAL_LOCALMSPDIR
+            value: /etc/hyperledger/msp/orderer/msp
+          - name: ORDERER_GENERAL_LOCALMSPID
+            value: OrdererMSP
+          image: hyperledger/fabric-orderer
+          name: orderer
+          ports:
+          - containerPort: 7050
+          resources: {}
+          volumeMounts:
+          - mountPath: /etc/hyperledger/configtx
+            name: orderer-claim0
+          - mountPath: /etc/hyperledger/msp/orderer
+            name: orderer-claim1
+          - mountPath: /etc/hyperledger/msp/peerOrg1
+            name: orderer-claim2
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+        restartPolicy: Always
+        volumes:
+        - name: orderer-claim0
+          persistentVolumeClaim:
+            claimName: orderer-claim0
+        - name: orderer-claim1
+          persistentVolumeClaim:
+            claimName: orderer-claim1
+        - name: orderer-claim2
+          persistentVolumeClaim:
+            claimName: orderer-claim2
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: orderer-claim0
+    name: orderer-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: orderer-claim1
+    name: orderer-claim1
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: orderer-claim2
+    name: orderer-claim2
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: peer0
+    name: peer0
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: peer0
+      spec:
+        containers:
+        - args:
+          - peer
+          - node
+          - start
+          env:
+          - name: CORE_CHAINCODE_DEPLOYTIMEOUT
+            value: 300s
+          - name: CORE_CHAINCODE_EXECUTETIMEOUT
+            value: 300s
+          - name: CORE_CHAINCODE_LOGGING_LEVEL
+            value: info
+          - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+            value: couchdb:5984
+          - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+          - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
+          - name: CORE_LEDGER_STATE_STATEDATABASE
+            value: CouchDB
+          - name: CORE_PEER_ADDRESS
+            value: peer0:7051
+          - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+            value: peer0:7051
+          - name: CORE_PEER_ID
+            value: peer0
+          - name: CORE_PEER_LOCALMSPID
+            value: Org1MSP
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /etc/hyperledger/msp/peer/
+          - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
+            value: net_basic
+          - name: CORE_VM_ENDPOINT
+            value: unix:///host/var/run/docker.sock
+          - name: FABRIC_LOGGING_SPEC
+            value: info
+          image: hyperledger/fabric-peer
+          name: peer0
+          ports:
+          - containerPort: 7051
+          - containerPort: 7053
+          resources: {}
+          volumeMounts:
+          - mountPath: /host/var/run/
+            name: peer0-claim0
+          - mountPath: /etc/hyperledger/msp/peer
+            name: peer0-claim1
+          - mountPath: /etc/hyperledger/msp/users
+            name: peer0-claim2
+          - mountPath: /etc/hyperledger/configtx
+            name: peer0-claim3
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric
+        restartPolicy: Always
+        volumes:
+        - name: peer0-claim0
+          persistentVolumeClaim:
+            claimName: peer0-claim0
+        - name: peer0-claim1
+          persistentVolumeClaim:
+            claimName: peer0-claim1
+        - name: peer0-claim2
+          persistentVolumeClaim:
+            claimName: peer0-claim2
+        - name: peer0-claim3
+          persistentVolumeClaim:
+            claimName: peer0-claim3
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: peer0-claim0
+    name: peer0-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: peer0-claim1
+    name: peer0-claim1
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: peer0-claim2
+    name: peer0-claim2
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: peer0-claim3
+    name: peer0-claim3
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    annotations:
+      kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yml
+      kompose.version: 1.16.0 (0c01309)
+    creationTimestamp: null
+    labels:
+      io.kompose.service: proms
+    name: proms
+  spec:
+    replicas: 1
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: proms
+      spec:
+        containers:
+        - image: prom/prometheus:latest
+          name: proms
+          ports:
+          - containerPort: 9090
+          resources: {}
+          volumeMounts:
+          - mountPath: /etc/prometheus/prometheus.yml
+            name: proms-claim0
+          - mountPath: /prometheus
+            name: prometheus-storage
+        restartPolicy: Always
+        volumes:
+        - name: proms-claim0
+          persistentVolumeClaim:
+            claimName: proms-claim0
+        - name: prometheus-storage
+          persistentVolumeClaim:
+            claimName: prometheus-storage
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: proms-claim0
+    name: proms-claim0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    creationTimestamp: null
+    labels:
+      io.kompose.service: prometheus-storage
+    name: prometheus-storage
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Mi
+  status: {}
+kind: List
+metadata: {}
+
