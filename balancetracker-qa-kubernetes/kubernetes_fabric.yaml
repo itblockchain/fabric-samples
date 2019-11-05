@@ -512,7 +512,7 @@ items:
       spec:
         containers:
         - args:
-          - orderer1
+          - orderer
           env:
           - name: FABRIC_LOGGING_SPEC
             value: info
@@ -601,7 +601,7 @@ items:
       spec:
         containers:
         - args:
-          - orderer2
+          - orderer
           env:
           - name: FABRIC_LOGGING_SPEC
             value: info
@@ -709,7 +709,7 @@ items:
           - name: CORE_LEDGER_STATE_STATEDATABASE
             value: CouchDB
           - name: CORE_PEER_ADDRESS
-            value: peer0:7051
+            value: 0.0.0.0:7051
           - name: CORE_PEER_GOSSIP_BOOTSTRAP
             value: peer0:7051
           - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
@@ -816,7 +816,7 @@ items:
           - name: CORE_LEDGER_STATE_STATEDATABASE
             value: CouchDB
           - name: CORE_PEER_ADDRESS
-            value: peer1:7051
+            value: 0.0.0.0:7051
           - name: CORE_PEER_GOSSIP_BOOTSTRAP
             value: peer1:7051
           - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
