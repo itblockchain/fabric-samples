@@ -204,12 +204,9 @@ items:
       spec:
         containers:
         - args:
-        - args:
           - sh
           - -c
-          - fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
-            --ca.keyfile /etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk
-            -b Interticket:Blockchain4ever
+          - fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk -b Interticket:Blockchain4ever
           env:
           - name: FABRIC_CA_HOME
             value: /etc/hyperledger/fabric-ca-server
@@ -380,7 +377,7 @@ items:
     strategy: {}
     selector:
       matchLabels:
-        balancetracker: couchdb0
+        balancetracker: couchdb1
     template:
       metadata:
         creationTimestamp: null
