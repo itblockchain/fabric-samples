@@ -1,0 +1,92 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: pgdata-claim
+  spec:
+    storageClassName: standard
+    volumeName: pgdata-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    selector:
+      matchLabels:
+        name: pgdata-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pgdata-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 100Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-qa-kubernetes/pgdata
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: walletstore-claim
+  spec:
+    storageClassName: standard
+    volumeName: walletstore-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    selector:
+      matchLabels:
+        name: walletstore-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: walletstore-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 100Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-qa-kubernetes/walletstore
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: fabrichome-claim
+  spec:
+    storageClassName: standard
+    volumeName: fabrichome-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 100Mi
+    selector:
+      matchLabels:
+        name: fabrichome-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: fabrichome-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 100Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples/balancetracker-qa-kubernetes/
+kind: List
+metadata: {}
+
