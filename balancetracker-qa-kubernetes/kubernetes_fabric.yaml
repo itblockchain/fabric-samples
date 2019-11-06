@@ -99,7 +99,7 @@ items:
     type: NodePort 
     ports:
     - name: "7060"
-      port: 7060
+      port: 7050
       targetPort: 7050
     selector:
       balancetracker: orderer1
@@ -120,7 +120,7 @@ items:
     type: NodePort 
     ports:
     - name: "7070"
-      port: 7070
+      port: 7050
       targetPort: 7050
     selector:
       balancetracker: orderer2

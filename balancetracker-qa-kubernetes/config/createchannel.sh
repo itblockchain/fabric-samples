@@ -9,16 +9,18 @@ echo "##### Creating the channel #########"
 echo "#####################################################"
 echo
 
-peer channel create -o orderer:7050 -c mychannel -f /etc/hyperledger/configtx/channel.tx
+export CORE_PEER_LOCALMSPID=Org1MSP
+export CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp
+peer channel create -o orderer:7050 -c bcchannel -f /etc/hyperledger/configtx/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 echo
 echo "#####################################################"
-echo "##### Adding peer to the channel #########"
+echo "##### Adding peer to the channel: peer0 #########"
 echo "#####################################################"
 echo
 
-peer channel join -b mychannel.block
+peer channel join -b bcchannel.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 echo "##########################################"
-echo "##### End of channel adding #########"
+echo "##### End of channel configuration #########"
 echo "##########################################"
