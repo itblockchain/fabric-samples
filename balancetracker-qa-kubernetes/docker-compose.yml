@@ -21,10 +21,10 @@ services:
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_CA_NAME=ca
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/145a84879a329308bf0c9b4427404c85e154b3b547660b91d99ac112a0df8760_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk -b Interticket:Blockchain4ever'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/145a84879a329308bf0c9b4427404c85e154b3b547660b91d99ac112a0df8760_sk -b Interticket:Blockchain4ever'
     volumes:
       - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
       - ./scripts/:/scripts

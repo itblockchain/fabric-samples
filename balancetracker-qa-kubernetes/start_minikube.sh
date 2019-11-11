@@ -94,6 +94,23 @@ echo $PODPEER0
 # Create the channel
 kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/createchannel.sh
 
+sleep 20
+
+PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
+
+# copy out bcchannel.block config file from peer0 
+kubectl cp $PODPEER0:opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block
+                  
+PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
+
+# copy in bcchannel.block config file to peer1 
+kubectl cp  /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:opt/gopath/src/github.com/hyperledger/fabric/
+
+PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
+
+# Join the channel
+kubectl exec -it $PODPEER1 /etc/hyperledger/configtx/addpeertochannel.sh
+
 # Starting hyperledger explorer: release 2
 if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
 echo "##########################################################"

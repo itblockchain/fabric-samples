@@ -206,14 +206,14 @@ items:
         - args:
           - sh
           - -c
-          - fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk -b Interticket:Blockchain4ever
+          - fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/145a84879a329308bf0c9b4427404c85e154b3b547660b91d99ac112a0df8760_sk -b Interticket:Blockchain4ever
           env:
           - name: FABRIC_CA_HOME
             value: /etc/hyperledger/fabric-ca-server
           - name: FABRIC_CA_SERVER_CA_CERTFILE
             value: /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
           - name: FABRIC_CA_SERVER_CA_KEYFILE
-            value: /etc/hyperledger/fabric-ca-server-config/e34f0a618a80d018305c69dd5f737a4a5c5fe5646dae14ce71fe5964bdd0cbc8_sk
+            value: /etc/hyperledger/fabric-ca-server-config/145a84879a329308bf0c9b4427404c85e154b3b547660b91d99ac112a0df8760_sk
           - name: FABRIC_CA_SERVER_CA_NAME
             value: ca
           - name: FABRIC_CA_SERVER_CSR_HOSTS
@@ -708,6 +708,8 @@ items:
             value: Blockchain
           - name: CORE_LEDGER_STATE_STATEDATABASE
             value: CouchDB
+          - name: CORE_PEER_CHAINCODELISTENADDRESS
+            value: 0.0.0.0:7052
           - name: CORE_PEER_ADDRESS
             value: 0.0.0.0:7051
           - name: CORE_PEER_GOSSIP_BOOTSTRAP
@@ -815,6 +817,8 @@ items:
             value: Blockchain
           - name: CORE_LEDGER_STATE_STATEDATABASE
             value: CouchDB
+          - name: CORE_PEER_CHAINCODELISTENADDRESS
+            value: 0.0.0.0:7052
           - name: CORE_PEER_ADDRESS
             value: 0.0.0.0:7051
           - name: CORE_PEER_GOSSIP_BOOTSTRAP
@@ -822,7 +826,7 @@ items:
           - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
             value: peer1:7051
           - name: CORE_PEER_ID
-            value: peer0
+            value: peer1
           - name: CORE_PEER_LOCALMSPID
             value: Org1MSP
           - name: CORE_PEER_MSPCONFIGPATH
@@ -855,7 +859,7 @@ items:
             subPath: ./balancetracker-qa-kubernetes/crypto-config/
           - mountPath: /etc/hyperledger/msp/peer
             name: peer1-claim1
-            subPath: ./balancetracker-qa-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/
+            subPath: ./balancetracker-qa-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/
           - mountPath: /etc/hyperledger/msp/users
             name: peer1-claim1
             subPath: ./balancetracker-qa-kubernetes/crypto-config/peerOrganizations/org1.example.com/users/
