@@ -61,11 +61,11 @@ echo "deleting exisiting volumes: BE AWARE OF DATALOSS"
 # kubectl delete -f kubernetes_fabric.yaml
 # kubectl delete -f kubernetes_explorerdb.yaml
 # kubectl delete -f kubernetes_explorer.yaml
- sleep 60
+ sleep 1
 
 # BE AWARE OF DATALOSS
 # kubectl delete -f kubernetes_fabricvolumes.yaml
- sleep 60
+ sleep 1
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
@@ -73,11 +73,11 @@ echo "##########################################################"
 
 # Create volumes: BE AWARE OF DATALOSS
 kubectl create -f kubernetes_fabricvolumes.yaml
-sleep 60
+sleep 100
 
 # create setup pod and configure mounts
 kubectl create -f kubernetes_setuppod.yaml
-sleep 60
+sleep 100
 
 # copy config files to the mapped directory
 kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes setuppod:/fabrichome
@@ -85,7 +85,7 @@ kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kub
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
 
-sleep 60
+sleep 100
 
 PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
