@@ -695,9 +695,11 @@ items:
           - start
           env:
           - name: CORE_CHAINCODE_DEPLOYTIMEOUT
-            value: 300s
+            value: 600s
           - name: CORE_CHAINCODE_EXECUTETIMEOUT
-            value: 300s
+            value: 600s
+          - name: CORE_CHAINCODE_STARTUPTIMEOUT 
+            value: 600s
           - name: CORE_CHAINCODE_LOGGING_LEVEL
             value: info
           - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
@@ -711,7 +713,7 @@ items:
           - name: CORE_PEER_CHAINCODELISTENADDRESS
             value: 0.0.0.0:7052
           - name: CORE_PEER_ADDRESS
-            value: 0.0.0.0:7051
+            value: peer0:7051
           - name: CORE_PEER_GOSSIP_BOOTSTRAP
             value: peer0:7051
           - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
@@ -730,12 +732,12 @@ items:
             value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
           - name: CORE_PEER_TLS_ROOTCERT_FILE
             value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-          - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
-            value: net_basic
           - name: CORE_VM_ENDPOINT
             value: unix:///host/var/run/docker.sock
           - name: FABRIC_LOGGING_SPEC
             value: info
+          - name: CORE_PEER_ADDRESSAUTODETECT
+            value: "true"
           image: hyperledger/fabric-peer
           name: peer0
           ports:
@@ -804,13 +806,15 @@ items:
           - start
           env:
           - name: CORE_CHAINCODE_DEPLOYTIMEOUT
-            value: 300s
+            value: 600s
           - name: CORE_CHAINCODE_EXECUTETIMEOUT
-            value: 300s
+            value: 600s
+          - name: CORE_CHAINCODE_STARTUPTIMEOUT 
+            value: 600s
           - name: CORE_CHAINCODE_LOGGING_LEVEL
             value: info
           - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
-            value: couchdb1:5984
+            value: couchdb1:5985
           - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
             value: Blockchain4ever
           - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
@@ -820,7 +824,7 @@ items:
           - name: CORE_PEER_CHAINCODELISTENADDRESS
             value: 0.0.0.0:7052
           - name: CORE_PEER_ADDRESS
-            value: 0.0.0.0:7051
+            value: peer1:7051
           - name: CORE_PEER_GOSSIP_BOOTSTRAP
             value: peer1:7051
           - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
@@ -839,12 +843,12 @@ items:
             value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/server.key
           - name: CORE_PEER_TLS_ROOTCERT_FILE
             value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
-          - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
-            value: net_basic
           - name: CORE_VM_ENDPOINT
             value: unix:///host/var/run/docker.sock
           - name: FABRIC_LOGGING_SPEC
             value: info
+          - name: CORE_PEER_ADDRESSAUTODETECT
+            value: "true"
           image: hyperledger/fabric-peer
           name: peer1
           ports:

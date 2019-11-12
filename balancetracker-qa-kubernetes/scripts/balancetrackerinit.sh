@@ -9,7 +9,7 @@ echo "##### Balance Tracker: installing chaincode to peer0 #########"
 echo "#####################################################"
 echo
 
-CORE_PEER_ADDRESS=peer0:7051
+export CORE_PEER_ADDRESS=peer0:7051
 
 peer chaincode install -l java -n bccc -v v1 -p /opt/gopath/src/github.com/chaincode/  --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
@@ -21,13 +21,13 @@ echo "##### Balance Tracker: installing chaincode to peer1 #########"
 echo "#####################################################"
 echo
 
-CORE_PEER_ADDRESS=peer1:7051
+export CORE_PEER_ADDRESS=peer1:7061
 
 peer chaincode install -l java -n bccc -v v1 -p /opt/gopath/src/github.com/chaincode/  --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 sleep 25
 
-CORE_PEER_ADDRESS=peer0:7051
+export CORE_PEER_ADDRESS=peer0:7051
 
 echo
 echo "#####################################################"
@@ -376,7 +376,7 @@ echo "##### Testing on peer1 #########"
 echo "#####################################################"
 echo
 
-CORE_PEER_ADDRESS=peer1:7051
+export CORE_PEER_ADDRESS=peer1:7061
 
 echo
 echo "#####################################################"

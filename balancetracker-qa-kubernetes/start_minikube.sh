@@ -104,7 +104,7 @@ kubectl cp $PODPEER0:opt/gopath/src/github.com/hyperledger/fabric/bcchannel.bloc
 PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 
 # copy in bcchannel.block config file to peer1 
-kubectl cp  /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:opt/gopath/src/github.com/hyperledger/fabric/
+kubectl cp  /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:/opt/gopath/src/github.com/hyperledger/fabric/
 
 PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 
@@ -137,7 +137,7 @@ PODCLI=$(kubectl get pod -l balancetracker=cli -o jsonpath="{.items[0].metadata.
 echo $PODCLI
 
 # Executing balancetracker initialization
-kubectl exec -it $PODCLI scripts/balancetrackerinit.sh
+kubectl exec -it $PODCLI scripts/balancetrackerinit.sh --request-timeout=0
 
 
 # Executing SDK side testing scripts

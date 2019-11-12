@@ -14,6 +14,11 @@ echo " ___) |   | |    / ___ \  |  _ <    | |  "
 echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
 echo
 
+# Setup google credentials to kubectl
+# gcloud container clusters get-credentials balancetracker-uat --region europe-west3-c
+# Check if current config is set
+# kubectl config current-context
+
 echo "##########################################################"
 echo "##### Preparing java files #########"
 echo "##########################################################"
@@ -25,67 +30,123 @@ echo $2
 echo "with explorer"
 echo $3
 
-mkdir -p balancetracker-chaincode/src
-cp -R $1/src/main balancetracker-chaincode/src
-cp $1/build.gradle balancetracker-chaincode
-cp $1/settings.gradle balancetracker-chaincode
-rm -rf balancetracker-chaincode/test
+
+# configure firwall rules: only at first installation
+# gcloud compute firewall-rules create fabricexplorer1 --allow tcp:31080
+# gcloud compute firewall-rules create fabric1 --allow tcp:31050
+# gcloud compute firewall-rules create fabric2 --allow tcp:31051
+# gcloud compute firewall-rules create fabric3 --allow tcp:31053
+# gcloud compute firewall-rules create fabric4 --allow tcp:31054
+# gcloud compute firewall-rules create fabric5 --allow tcp:31055
+
+echo "##########################################################"
+echo "##### Copy files: analyze input parameters #########"
+echo "##########################################################"
+
+mkdir -p balancetracker-chaincode/code/src
+cp -R $1/src/main balancetracker-chaincode/code/src
+cp $1/build.gradle balancetracker-chaincode/code
+cp $1/settings.gradle balancetracker-chaincode/code
+rm -rf balancetracker-chaincode/code/test
+
+echo "##########################################################"
+echo "##### Delete existing installation #########"
+echo "##########################################################"
+
+echo "deleting exisiting volumes: BE AWARE OF DATALOSS"
+
+# Shutting down exisiting networks 
+# kubectl delete -f kubernetes_setuppod.yaml
+# kubectl delete -f kubernetes_fabric.yaml
+# kubectl delete -f kubernetes_explorerdb.yaml
+# kubectl delete -f kubernetes_explorer.yaml
+ sleep 1
+
+# BE AWARE OF DATALOSS
+# kubectl delete -f kubernetes_fabricvolumes.yaml
+ sleep 1
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
 echo "##########################################################"
 
-# Shutting down exisiting network
-docker-compose -f docker-compose.yml down
+# Create volumes: BE AWARE OF DATALOSS
+kubectl create -f kubernetes_fabricvolumes.yaml
+sleep 120
 
-# Starting hyperledger fabric
-docker-compose -f docker-compose.yml up -d couchdb0 couchdb1 ca orderer orderer1 orderer2 peer0 peer1 cli
+# create setup pod and configure mounts
+kubectl create -f kubernetes_setuppod.yaml
+sleep 120
 
-# wait for Hyperledger Fabric to start
-# incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
-export FABRIC_START_TIMEOUT=30
-#echo ${FABRIC_START_TIMEOUT}
-sleep ${FABRIC_START_TIMEOUT}
+# copy config files to the mapped directory
+kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes setuppod:/fabrichome
 
-# Create admin users
-docker exec ca scripts/users.sh
+# Create new network
+kubectl create -f kubernetes_fabric.yaml
+
+sleep 120
+
+PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
+
+echo $PODPEER0
 
 # Create the channel
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0 peer channel create -o orderer:7050 -c bcchannel -f /etc/hyperledger/configtx/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/createchannel.sh
 
-# Copy the bccchannel.block file
-docker cp peer0:/opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block bcchannel.block
+sleep 20
 
-docker cp bcchannel.block peer1:/opt/gopath/src/github.com/hyperledger/fabric/
+PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
-# Join peer0.org1.example.com to the channel.
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0 peer channel join -b bcchannel.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+# copy out bcchannel.block config file from peer0 
+kubectl cp $PODPEER0:opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block
+                  
+PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 
-# Join peer0.org1.example.com to the channel.
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer1 peer channel join -b bcchannel.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+# copy in bcchannel.block config file to peer1 
+kubectl cp  /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:/opt/gopath/src/github.com/hyperledger/fabric/
 
-# Update channels with anchor peer
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp" peer0 peer channel update -o orderer:7050 -c bcchannel -f /etc/hyperledger/configtx/Org1MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 
-# Starting hyperledger explorer
+# Join the channel
+kubectl exec -it $PODPEER1 /etc/hyperledger/configtx/addpeertochannel.sh
+
+# Starting hyperledger explorer: release 2
 if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then
-echo "starting explorer"
-docker-compose -f docker-compose.yml up -d explorerdb explorer
-#docker-compose -f docker-compose.yml up -d explorerdb explorer proms grafana
+echo "##########################################################"
+echo "##### Starting Hyperledger Explorer #########"
+echo "##########################################################"
+echo ""
+echo "Start explorer DB"
+    kubectl create -f kubernetes_explorerdb.yaml
+    sleep 45
+
+    PODEXPLORERDB=$(kubectl get pod -l balancetracker=explorerdb -o jsonpath="{.items[0].metadata.name}")
+
+    kubectl exec -it $PODEXPLORERDB ./createdb.sh
+
+    sleep 30
+
+    echo "Start explorer"
+
+    kubectl create -f kubernetes_explorer.yaml
 fi
+
+PODCLI=$(kubectl get pod -l balancetracker=cli -o jsonpath="{.items[0].metadata.name}")
+
+echo $PODCLI
 
 # Executing balancetracker initialization
-docker exec cli scripts/balancetrackerinit.sh
+kubectl exec -it $PODCLI scripts/balancetrackerinit.sh --request-timeout=0
+
 
 # Executing SDK side testing scripts
-if [ ! -z "$2" ] && [ "$2" != "-e" ];
-then
-echo "SDK test"
-docker exec cli mkdir /srv/test/
-docker cp $2 cli:/srv/test
-docker exec cli java -jar /srv/test/BalanceTracker-1.0.1.jar
-fi
-
+#if [ ! -z "$2" ] && [ "$2" != "-e" ];
+#then
+#echo "SDK test"
+#docker exec cli mkdir /srv/test/
+#docker cp $2 cli:/srv/test
+#docker exec cli java -jar /srv/test/BalanceTracker-1.0.1.jar
+#fi
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is finishing #########"
@@ -100,4 +161,3 @@ echo "|_____| |_| \_| |____/  "
 echo
 
 exit 0
-
