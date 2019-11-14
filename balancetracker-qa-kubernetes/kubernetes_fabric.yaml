@@ -229,6 +229,9 @@ items:
           - mountPath: /etc/hyperledger/fabric-ca-server-config
             name: ca-claim0
             subPath: ./balancetracker-qa-kubernetes/crypto-config/peerOrganizations/org1.example.com/ca/
+          - mountPath: /etc/hyperledger/scripts
+            name: ca-claim0
+            subPath: ./balancetracker-qa-kubernetes/scripts/
         restartPolicy: Always
         volumes:
         - name: ca-claim0

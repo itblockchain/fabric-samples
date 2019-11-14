@@ -87,6 +87,10 @@ kubectl create -f kubernetes_fabric.yaml
 
 sleep 100
 
+PODPEERCA=$(kubectl get pod -l balancetracker=ca -o jsonpath="{.items[0].metadata.name}")
+
+kubectl exec -it $PODPEERCA /etc/hyperledger/scripts/users.sh --request-timeout=0
+
 PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
 echo $PODPEER0
@@ -110,6 +114,14 @@ PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metad
 
 # Join the channel
 kubectl exec -it $PODPEER1 /etc/hyperledger/configtx/addpeertochannel.sh
+
+sleep 30
+
+PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
+
+kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/updatechannel.sh
+
+sleep 30
 
 # Starting hyperledger explorer: release 2
 if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then

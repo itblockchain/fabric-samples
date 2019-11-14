@@ -5,22 +5,23 @@
 
 echo
 echo "#####################################################"
-echo "##### Peer1 Init #########"
+echo "##### Peer0 Init #########"
 echo "#####################################################"
 echo
 
-echo "0.0.0.0  peer1" >> /etc/hosts
+echo "0.0.0.0  peer0" >> /etc/hosts
 export CORE_PEER_LOCALMSPID=Org1MSP
 export CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.example.com/msp
 
 echo
 echo "#####################################################"
-echo "##### Adding peer to the channel: peer1 #########"
+echo "##### Update channel with anchor #########"
 echo "#####################################################"
 echo
 
-peer channel join -b bcchannel.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+# Update channels with anchor peer
+peer channel update -o orderer:7050 -c bcchannel -f /etc/hyperledger/configtx/Org1MSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 echo "##########################################"
-echo "##### End of channel configuration #########"
+echo "##### End of channel update #########"
 echo "##########################################"
