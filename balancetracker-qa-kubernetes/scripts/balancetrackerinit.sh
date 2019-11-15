@@ -27,6 +27,10 @@ peer chaincode install -l java -n bccc -v v1 -p /opt/gopath/src/github.com/chain
 
 sleep 25
 
+peer chaincode instantiate -o orderer:7050 -C bcchannel -n bccc  -v v1 -c '{"Args":[]}' -P 'OR ("Org1MSP.member")' --collections-config /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/priv_collection_config.json --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+sleep 120
+
 export CORE_PEER_ADDRESS=peer0:7051
 
 echo
@@ -337,7 +341,6 @@ echo
 echo "Test IssueCertificate"
 echo
 
-
 echo
 echo "Test rich query getQueryResult"
 echo
@@ -350,7 +353,6 @@ echo
 
 peer chaincode query -C bcchannel -n bccc -c '{"Args":["GetQueryResult","{\"selector\": {\"modelType\":\"Account\"}}"]}'
 sleep 2
-
 
 echo
 echo "#####################################################"
@@ -368,7 +370,6 @@ echo
 
 peer chaincode query -C bcchannel -n bccc -c '{"Args":["GetCertificate","testCert1"]}'
 sleep 2
-
 
 echo
 echo "#####################################################"
