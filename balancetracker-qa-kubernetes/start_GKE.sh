@@ -38,6 +38,7 @@ echo $3
 # gcloud compute firewall-rules create fabric3 --allow tcp:31053
 # gcloud compute firewall-rules create fabric4 --allow tcp:31054
 # gcloud compute firewall-rules create fabric5 --allow tcp:31055
+# gcloud compute firewall-rules create fabric6 --allow tcp:31061
 
 echo "##########################################################"
 echo "##### Copy files: analyze input parameters #########"
