@@ -67,24 +67,30 @@ echo "deleting exisiting volumes: BE AWARE OF DATALOSS"
  sleep 1
 
 echo "##########################################################"
-echo "##### Balance Tracker test network is starting #########"
+echo "##### Balance Tracker QA network is starting #########"
 echo "##########################################################"
 
 # Create volumes: BE AWARE OF DATALOSS
 kubectl create -f kubernetes_fabricvolumes.yaml
-sleep 120
+sleep 100
 
 # create setup pod and configure mounts
 kubectl create -f kubernetes_setuppod.yaml
-sleep 120
+sleep 100
 
 # copy config files to the mapped directory
 kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes setuppod:/fabrichome
 
+sleep 30
+
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
 
-sleep 120
+sleep 100
+
+PODPEERCA=$(kubectl get pod -l balancetracker=ca -o jsonpath="{.items[0].metadata.name}")
+
+kubectl exec -it $PODPEERCA /etc/hyperledger/scripts/users.sh --request-timeout=0
 
 PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
@@ -95,20 +101,28 @@ kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/createchannel.sh
 
 sleep 20
 
-PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
+#PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
 # copy out bcchannel.block config file from peer0 
-kubectl cp $PODPEER0:opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block
+#kubectl cp $PODPEER0:opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block
                   
-PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
+#PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 
 # copy in bcchannel.block config file to peer1 
-kubectl cp  /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:/opt/gopath/src/github.com/hyperledger/fabric/
+#kubectl cp  /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:/opt/gopath/src/github.com/hyperledger/fabric/
 
 PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 
 # Join the channel
 kubectl exec -it $PODPEER1 /etc/hyperledger/configtx/addpeertochannel.sh
+
+sleep 30
+
+PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
+
+kubectl exec -it $PODPEER0 /etc/hyperledger/configtx/updatechannel.sh
+
+sleep 30
 
 # Starting hyperledger explorer: release 2
 if [ "$3" == "-e" ] || [ "$2" == "-e" ]; then

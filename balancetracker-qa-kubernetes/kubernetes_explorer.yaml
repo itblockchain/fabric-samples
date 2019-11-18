@@ -55,9 +55,9 @@ items:
           - name: DATABASE_HOST
             value: explorerdb
           - name: DATABASE_PASSWD
-            value: password
-          - name: DATABASE_USERNAME
             value: Blockchain4ever
+          - name: DATABASE_USERNAME
+            value: hppoc
           - name: DISCOVERY_AS_LOCALHOST
             value: "false"
           image: hyperledger/explorer:latest
@@ -68,13 +68,13 @@ items:
           volumeMounts:
           - mountPath: /opt/explorer/app/platform/fabric/
             name: explorer-claim0
-            subPath: ./balancetracker-test-kubernetes/app/platform/fabric/
+            subPath: ./balancetracker-qa-kubernetes/app/platform/fabric/
           - mountPath: /opt/explorer/app/platform/fabric/connection-profile
             name: explorer-claim0
-            subPath: ./balancetracker-test-kubernetes/app/platform/fabric/connection-profile/
+            subPath: ./balancetracker-qa-kubernetes/app/platform/fabric/connection-profile/
           - mountPath: /tmp/crypto
             name: explorer-claim0
-            subPath: ./balancetracker-test-kubernetes/crypto-config/
+            subPath: ./balancetracker-qa-kubernetes/crypto-config/
           - mountPath: /opt/wallet
             name: walletstore-volume-claim
         hostname: explorer

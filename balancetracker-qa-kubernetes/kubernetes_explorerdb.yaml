@@ -60,7 +60,7 @@ items:
           volumeMounts:
           - mountPath: /docker-entrypoint-initdb.d/
             name: explorerdb-claim0
-            subPath: ./balancetracker-test-kubernetes/app/persistence/fabric/postgreSQL/db/
+            subPath: ./balancetracker-qa-kubernetes/app/persistence/fabric/postgreSQL/db/
           - mountPath: /var/lib/postgresql/data/
             name: pgdata-volume-claim
         hostname: explorerdb

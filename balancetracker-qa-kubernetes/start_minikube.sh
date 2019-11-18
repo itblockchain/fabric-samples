@@ -68,7 +68,7 @@ echo "deleting exisiting volumes: BE AWARE OF DATALOSS"
  sleep 1
 
 echo "##########################################################"
-echo "##### Balance Tracker test network is starting #########"
+echo "##### Balance Tracker QA network is starting #########"
 echo "##########################################################"
 
 # Create volumes: BE AWARE OF DATALOSS
@@ -81,6 +81,8 @@ sleep 100
 
 # copy config files to the mapped directory
 kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes setuppod:/fabrichome
+
+sleep 30
 
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
