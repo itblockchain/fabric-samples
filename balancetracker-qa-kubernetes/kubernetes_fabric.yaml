@@ -217,7 +217,7 @@ items:
           - name: FABRIC_CA_SERVER_CA_NAME
             value: ca
           - name: FABRIC_CA_SERVER_CSR_HOSTS
-            value: localhost
+            value: ca
           - name: FABRIC_CA_SERVER_TLS_ENABLED
             value: "true"
           image: hyperledger/fabric-ca
