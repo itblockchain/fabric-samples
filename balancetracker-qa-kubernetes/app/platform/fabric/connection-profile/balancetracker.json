@@ -38,7 +38,7 @@
 			"mspid": "Org1MSP",
 			"fullpath": true,
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/e19de27a61fcf5a0161944e38cb8b89a8a2439dc367328aa04aeff412be9d630_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/7e9ffd3b9e0f9c81e3ceb9f40d7b44ee38754414d1b43d5d3acacf449397edcf_sk"
 			},
 			"signedCert": {
 				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
@@ -48,7 +48,7 @@
           "mspid": "OrdererMSP",
           "adminPrivateKey": {
             "path":
-              "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/efa01f3aa3ecdd051ebf27c546e9d2b4e06422021fa6f6a9c773921acda738aa_sk"
+              "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/ffe6a4d875dc3922f53469e5f757396cd74b866bc36b3bd0c60577af42ac4793_sk"
           },
 		  "signedCert": {
 			  "path": "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem"

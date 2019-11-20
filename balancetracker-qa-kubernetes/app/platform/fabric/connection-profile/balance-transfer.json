@@ -33,7 +33,7 @@
 			"peers": ["peer0.org1.example.com", "peer1.org1.example.com"],
 			"certificateAuthorities": ["ca-org1"],
 			"adminPrivateKey": {
-				"path": "/fabric-path/fabric-samples/balance-transfer/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/5890f0061619c06fb29dea8cb304edecc020fe63f41a6db109f1e227cc1cb2a8_sk"
+				"path": "/fabric-path/fabric-samples/balance-transfer/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/7e9ffd3b9e0f9c81e3ceb9f40d7b44ee38754414d1b43d5d3acacf449397edcf_sk"
 			},
 			"signedCert": {
 				"path": "/fabric-path/fabric-samples/balance-transfer/artifacts/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
