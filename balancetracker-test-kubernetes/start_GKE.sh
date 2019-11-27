@@ -54,13 +54,13 @@ echo "##### Delete existing installation #########"
 echo "##########################################################"
 
 # Shutting down exisiting networks
- kubectl delete -f kubernetes_setuppod.yaml
- kubectl delete -f kubernetes_fabric.yaml
- kubectl delete -f kubernetes_explorerdb.yaml
- kubectl delete -f kubernetes_explorer.yaml
+# kubectl delete -f kubernetes_setuppod.yaml
+# kubectl delete -f kubernetes_fabric.yaml
+# kubectl delete -f kubernetes_explorerdb.yaml
+# kubectl delete -f kubernetes_explorer.yaml
 # BE AWARE OF DATALOSS
- kubectl delete -f kubernetes_fabricvolumes.yaml
-sleep 60
+# kubectl delete -f kubernetes_fabricvolumes.yaml
+sleep 1
 
 echo "##########################################################"
 echo "##### Balance Tracker test network is starting #########"
@@ -68,19 +68,19 @@ echo "##########################################################"
 
 # Create volumes: BE AWARE OF DATALOSS
 kubectl create -f kubernetes_fabricvolumes.yaml
-sleep 60
+sleep 200
 
 # create setup pod and configure mounts
 kubectl create -f kubernetes_setuppod.yaml
-sleep 60
+sleep 200
 
 # copy config files to the mapped directory
-kubectl cp /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes setuppod:/fabrichome
+kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes setuppod:/fabrichome
 
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
 
-sleep 90
+sleep 200
 
 PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 

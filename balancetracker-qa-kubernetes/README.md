@@ -11,19 +11,17 @@ The created peers:
 
 Note that this basic configuration uses pre-generated certificates and
 key material, and also has predefined transactions to initialize a 
-channel named "mychannel".
+channel named "bcchannel".
 
-Make sure that the program runs on an installed Hyperledger Fabric 4.0 under the fabric-samples directory
-
-To regenerate this material, simply run ``generate.sh``.
-
-To start the network, run ``start.sh``. 
+To start the network, run different versions of the ``start.sh``. 
 The command must be followed as parameter by the path for the source code, including the gradle files as well. 
 
-If you install a new chaincode, you can use the ``startnew.sh`` script with the same parameters.
-NOTE HOWEVER THAT THE STARTNEW.SH REINITALIZES THE WHOLE BLOCKCHAIN, DELETING ALL THE PREVIOUS DATA
+``start_minikube.sh`` installs the infrastrcuture on a locally configured minikube envrionment. 
 
-To stop it, run ``stop.sh``
-To completely remove all incriminating evidence of the network
-on your system, run ``teardown.sh``.
+``start_GKE.sh`` installs the infrastrcuture google Kubernetes engine. 
+
+
+follow -e option to to install hyperledger explorer as well. 
+
+
 
