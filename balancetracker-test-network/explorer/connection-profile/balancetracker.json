@@ -37,7 +37,7 @@
 			"mspid": "Org1MSP",
 			"fullpath": true,
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/2ea5d6b91c481e41b0408ec99e1448322e824ded1448de4260a3a516bcf0fc47_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/fdb2cef476b66222ad01a366d0d0709a0561f93ff968ace56a5970baa29b58e0_sk"
 			},
 			"signedCert": {
 				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
@@ -47,7 +47,7 @@
           "mspid": "OrdererMSP",
           "adminPrivateKey": {
             "path":
-              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/2ea5d6b91c481e41b0408ec99e1448322e824ded1448de4260a3a516bcf0fc47_sk"
+              "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/fdb2cef476b66222ad01a366d0d0709a0561f93ff968ace56a5970baa29b58e0_sk"
           }
         }
 
