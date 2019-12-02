@@ -315,7 +315,7 @@ services:
       - peer1
 
   explorer:
-    image: hyperledger/explorer:latest
+    image: danielszego/explorer:latest
     container_name: explorer
     hostname: explorer
     environment:
@@ -327,6 +327,7 @@ services:
       - ./explorer/config.json:/opt/explorer/app/platform/fabric/config.json
       - ./explorer/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
       - ./crypto-config:/tmp/crypto
+      - ./explorer_ssl_certs:/opt/explorer/ssl-certs
       - walletstore:/opt/wallet
     command: sh -c "sleep 16&& node /opt/explorer/main.js && tail -f /dev/null"
     ports:

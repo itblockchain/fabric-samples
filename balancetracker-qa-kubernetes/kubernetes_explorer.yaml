@@ -60,7 +60,7 @@ items:
             value: hppoc
           - name: DISCOVERY_AS_LOCALHOST
             value: "false"
-          image: hyperledger/explorer:latest
+          image: danielszego/explorer:latest
           name: explorer
           ports:
           - containerPort: 8080
@@ -75,6 +75,9 @@ items:
           - mountPath: /tmp/crypto
             name: explorer-claim0
             subPath: ./balancetracker-qa-kubernetes/crypto-config/
+          - mountPath: /opt/explorer/ssl-certs/
+            name: explorer-claim0
+            subPath: ./balancetracker-qa-kubernetes/explorer_ssl_certs/
           - mountPath: /opt/wallet
             name: walletstore-volume-claim
         hostname: explorer
