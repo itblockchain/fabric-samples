@@ -125,7 +125,7 @@ items:
           - name: FABRIC_CA_SERVER_CA_CERTFILE
             value: /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
           - name: FABRIC_CA_SERVER_CA_KEYFILE
-            value: /etc/hyperledger/fabric-ca-server-config/6cb000b2ab5cb8e11631e3c9c3d5abdbe8878a55dad3ac3191d3e2dad6a27076_sk
+            value: /etc/hyperledger/fabric-ca-server-config/c6ab586b721720bf477cf6da8e0423f29e40d6669ead0cf03f369adce8fec5f4_sk
           - name: FABRIC_CA_SERVER_CA_NAME
             value: ca
           image: hyperledger/fabric-ca

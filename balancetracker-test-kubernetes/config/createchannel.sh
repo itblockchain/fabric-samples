@@ -22,4 +22,3 @@ peer channel join -b mychannel.block
 echo "##########################################"
 echo "##### End of channel adding #########"
 echo "##########################################"
-
