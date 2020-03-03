@@ -28,7 +28,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/pgdata
+      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/pgdata
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -57,7 +57,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/walletstore
+      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/walletstore
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -86,7 +86,65 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes/
+      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: couchdb-claim
+  spec:
+    storageClassName: standard
+    volumeName: couchdb-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 10Mi
+    selector:
+      matchLabels:
+        name: couchdb-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: couchdb-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 10Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/couchdb-volume/
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: orderer-claim
+  spec:
+    storageClassName: standard
+    volumeName: orderer-volume
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 10Mi
+    selector:
+      matchLabels:
+        name: orderer-volume
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: orderer-volume
+    labels:
+      type: local
+  spec:
+    capacity:
+      storage: 10Mi
+    storageClassName: standard
+    accessModes:
+      - ReadWriteMany
+    hostPath:
+      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/orderer-volume/
 kind: List
 metadata: {}
 

@@ -257,6 +257,15 @@ items:
           ports:
           - containerPort: 5984
           resources: {}
+          volumeMounts:
+          - mountPath: /opt/couchdb/data
+            name: couchdb-claim0
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+        restartPolicy: Always
+        volumes:
+        - name: couchdb-claim0
+          persistentVolumeClaim:
+            claimName: couchdb-claim
         restartPolicy: Always
   status: {}
 - apiVersion: apps/v1

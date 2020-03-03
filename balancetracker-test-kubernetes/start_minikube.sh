@@ -80,7 +80,7 @@ kubectl create -f kubernetes_setuppod.yaml
 sleep 60
 
 # copy config files to the mapped directory
-kubectl cp /home/hyperledgerdev/fabric-samples/balancetracker-test-kubernetes setuppod:/fabrichome
+kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes setuppod:/fabrichome
 
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
