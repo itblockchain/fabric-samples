@@ -220,7 +220,7 @@ items:
             value: ca
           - name: FABRIC_CA_SERVER_TLS_ENABLED
             value: "true"
-          image: hyperledger/fabric-ca
+          image: hyperledger/fabric-ca:1.4.6
           name: ca
           ports:
           - containerPort: 7054
@@ -290,7 +290,7 @@ items:
             value: info
           - name: GOPATH
             value: /opt/gopath
-          image: hyperledger/fabric-tools
+          image: hyperledger/fabric-tools:1.4.6
           name: cli
           resources: {}
           tty: true
@@ -357,7 +357,7 @@ items:
             value: Blockchain4ever
           - name: COUCHDB_USER
             value: Blockchain
-          image: hyperledger/fabric-couchdb
+          image: hyperledger/fabric-couchdb:0.4
           name: couchdb0
           ports:
           - containerPort: 5984
@@ -393,7 +393,7 @@ items:
             value: Blockchain4ever
           - name: COUCHDB_USER
             value: Blockchain
-          image: hyperledger/fabric-couchdb
+          image: hyperledger/fabric-couchdb:0.4
           name: couchdb1
           ports:
           - containerPort: 5984
@@ -458,7 +458,7 @@ items:
             value: "1"
           - name: ORDERER_KAFKA_VERBOSE
             value: "true"
-          image: hyperledger/fabric-orderer
+          image: hyperledger/fabric-orderer:1.4.6
           name: orderer
           ports:
           - containerPort: 7050
@@ -547,7 +547,7 @@ items:
             value: "1"
           - name: ORDERER_KAFKA_VERBOSE
             value: "true"
-          image: hyperledger/fabric-orderer
+          image: hyperledger/fabric-orderer:1.4.6
           name: orderer1
           ports:
           - containerPort: 7050
@@ -636,7 +636,7 @@ items:
             value: "1"
           - name: ORDERER_KAFKA_VERBOSE
             value: "true"
-          image: hyperledger/fabric-orderer
+          image: hyperledger/fabric-orderer:1.4.6
           name: orderer2
           ports:
           - containerPort: 7050
@@ -741,7 +741,7 @@ items:
             value: info
           - name: CORE_PEER_ADDRESSAUTODETECT
             value: "true"
-          image: hyperledger/fabric-peer
+          image: hyperledger/fabric-peer:1.4.6
           name: peer0
           ports:
           - containerPort: 7051
@@ -852,7 +852,7 @@ items:
             value: info
           - name: CORE_PEER_ADDRESSAUTODETECT
             value: "true"
-          image: hyperledger/fabric-peer
+          image: hyperledger/fabric-peer:1.4.6
           name: peer1
           ports:
           - containerPort: 7051

@@ -128,7 +128,7 @@ items:
             value: /etc/hyperledger/fabric-ca-server-config/c6ab586b721720bf477cf6da8e0423f29e40d6669ead0cf03f369adce8fec5f4_sk
           - name: FABRIC_CA_SERVER_CA_NAME
             value: ca
-          image: hyperledger/fabric-ca
+          image: hyperledger/fabric-ca:1.4.6
           name: ca
           ports:
           - containerPort: 7054
@@ -187,7 +187,7 @@ items:
             value: info
           - name: GOPATH
             value: /opt/gopath
-          image: hyperledger/fabric-tools
+          image: hyperledger/fabric-tools:1.4.6
           name: cli
           resources: {}
           tty: true
@@ -252,7 +252,7 @@ items:
         - env:
           - name: COUCHDB_PASSWORD
           - name: COUCHDB_USER
-          image: hyperledger/fabric-couchdb
+          image: hyperledger/fabric-couchdb:0.4
           name: couchdb
           ports:
           - containerPort: 5984
@@ -308,7 +308,7 @@ items:
             value: /etc/hyperledger/msp/orderer/msp
           - name: ORDERER_GENERAL_LOCALMSPID
             value: OrdererMSP
-          image: hyperledger/fabric-orderer
+          image: hyperledger/fabric-orderer:1.4.6
           name: orderer
           ports:
           - containerPort: 7050
@@ -398,7 +398,7 @@ items:
             value: /etc/hyperledger/msp/users/Admin@org1.example.com/msp
           - name: CORE_PEER_ADDRESSAUTODETECT
             value: "true"
-          image: hyperledger/fabric-peer
+          image: hyperledger/fabric-peer:1.4.6
           name: peer0
           ports:
           - containerPort: 7051

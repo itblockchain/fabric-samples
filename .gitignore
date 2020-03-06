@@ -8,3 +8,8 @@
 /config
 .DS_Store
 .project
+/balancetracker-qa-kubernetes/balancetracker-chaincode
+/balancetracker-qa-network/balancetracker-chaincode
+/balancetracker-test-network/balancetracker-chaincode
+/balancetracker-test-kubernetes/balancetracker-chaincode
+
