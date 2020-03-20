@@ -334,7 +334,7 @@ echo "#####################################################"
 echo "##### Balance Tracker: Test Rich query services #########"
 echo "#####################################################"
 echo
-echo "Test IssueCertificate"
+echo "Test Rich query"
 echo
 
 
@@ -349,6 +349,18 @@ echo
 echo
 
 peer chaincode query -C bcchannel -n bccc -c '{"Args":["GetQueryResult","{\"selector\": {\"modelType\":\"Account\"}}"]}'
+sleep 2
+
+echo
+echo
+
+peer chaincode query -C mychannel -n bccc -c '{"Args":["GetQueryResult","{\"selector\":{\"tags\": {\"testTag1\": \"testTag1\"}}}"]}'
+sleep 2
+
+echo
+echo
+
+peer chaincode query -C mychannel -n bccc -c '{"Args":["GetQueryResult","{\"selector\":{\"tags\": {\"flvTag1\": \"flvTagValue1\"}}}"]}'
 sleep 2
 
 

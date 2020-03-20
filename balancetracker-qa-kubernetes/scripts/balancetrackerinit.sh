@@ -355,6 +355,18 @@ peer chaincode query -C bcchannel -n bccc -c '{"Args":["GetQueryResult","{\"sele
 sleep 2
 
 echo
+echo
+
+peer chaincode query -C mychannel -n bccc -c '{"Args":["GetQueryResult","{\"selector\":{\"tags\": {\"testTag1\": \"testTag1\"}}}"]}'
+sleep 2
+
+echo
+echo
+
+peer chaincode query -C mychannel -n bccc -c '{"Args":["GetQueryResult","{\"selector\":{\"tags\": {\"flvTag1\": \"flvTagValue1\"}}}"]}'
+sleep 2
+
+echo
 echo "#####################################################"
 echo "##### Balance Tracker: Test Certificate services #########"
 echo "#####################################################"
