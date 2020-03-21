@@ -342,6 +342,12 @@ peer chaincode query -C mychannel -n mycc -c '{"Args":["GetQueryResult","{\"sele
 sleep 2
 
 echo
+echo
+
+peer chaincode query -C mychannel -n mycc -c '{"Args":["GetQueryResult","{\"selector\":{\"quorum\":0,\"modelType\":\"Account\",  \"tags\": {\"testTag1\": \"testTag1\"}}}"]}'
+sleep 2
+
+echo
 echo "#####################################################"
 echo "##### Balance Tracker: Test Certificate services #########"
 echo "#####################################################"
