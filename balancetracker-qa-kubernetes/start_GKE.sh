@@ -80,7 +80,7 @@ kubectl create -f kubernetes_setuppod.yaml
 sleep 100
 
 # copy config files to the mapped directory
-kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes setuppod:/fabrichome
+kubectl cp /home/dsz/fabric-samples-interticket/balancetracker-qa-kubernetes setuppod:/fabrichome
 
 sleep 30
 
@@ -105,12 +105,12 @@ sleep 20
 #PODPEER0=$(kubectl get pod -l balancetracker=peer0 -o jsonpath="{.items[0].metadata.name}")
 
 # copy out bcchannel.block config file from peer0 
-#kubectl cp $PODPEER0:opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block
+#kubectl cp $PODPEER0:opt/gopath/src/github.com/hyperledger/fabric/bcchannel.block /home/dsz/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block
                   
 #PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 
 # copy in bcchannel.block config file to peer1 
-#kubectl cp  /home/hyperledgerdev/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:/opt/gopath/src/github.com/hyperledger/fabric/
+#kubectl cp  /home/dsz/fabric-samples-interticket/balancetracker-qa-kubernetes/bcchannel.block $PODPEER1:/opt/gopath/src/github.com/hyperledger/fabric/
 
 PODPEER1=$(kubectl get pod -l balancetracker=peer1 -o jsonpath="{.items[0].metadata.name}")
 

@@ -295,7 +295,7 @@ services:
       - peer1
 
   explorerdb:
-    image: hyperledger/explorer-db:latest
+    image: hyperledger/explorer-db::1.0.0-rc2
     container_name: explorerdb
     hostname: explorerdb
     environment:

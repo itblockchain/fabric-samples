@@ -75,7 +75,7 @@ kubectl create -f kubernetes_setuppod.yaml
 sleep 200
 
 # copy config files to the mapped directory
-kubectl cp /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes setuppod:/fabrichome
+kubectl cp /home/dsz/fabric-samples-interticket/balancetracker-test-kubernetes setuppod:/fabrichome
 
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
@@ -97,13 +97,13 @@ echo "##########################################################"
 echo ""
 echo "Start explorer DB"
     kubectl create -f kubernetes_explorerdb.yaml
-    sleep 45
+    sleep 150
 
     PODEXPLORERDB=$(kubectl get pod -l balancetracker=explorerdb -o jsonpath="{.items[0].metadata.name}")
 
     kubectl exec -it $PODEXPLORERDB ./createdb.sh
 
-    sleep 30
+    sleep 150
 
     echo "Start explorer"
 

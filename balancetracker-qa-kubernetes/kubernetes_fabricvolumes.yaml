@@ -28,7 +28,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-qa-kubernetes/pgdata
+      path: /home/dsz/fabric-samples/balancetracker-qa-kubernetes/pgdata
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -57,7 +57,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-qa-kubernetes/walletstore
+      path: /home/dsz/fabric-samples/balancetracker-qa-kubernetes/walletstore
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -86,7 +86,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples/balancetracker-qa-kubernetes/
+      path: /home/dsz/fabric-samples/balancetracker-qa-kubernetes/
 kind: List
 metadata: {}
 

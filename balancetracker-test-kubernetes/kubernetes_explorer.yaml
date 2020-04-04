@@ -60,7 +60,7 @@ items:
             value: hppoc
           - name: DISCOVERY_AS_LOCALHOST
             value: "false"
-          image: hyperledger/explorer:latest
+          image: hyperledger/explorer:1.0.0-rc2
           name: explorer
           ports:
           - containerPort: 8080

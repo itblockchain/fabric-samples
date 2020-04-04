@@ -52,7 +52,7 @@ items:
             value: password
           - name: DATABASE_USERNAME
             value: hppoc
-          image: hyperledger/explorer-db:latest
+          image: hyperledger/explorer-db:1.0.0-rc2
           name: explorerdb
           ports:
           - containerPort: 5432

@@ -28,7 +28,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/pgdata
+      path: /home/dsz/fabric-samples-interticket/balancetracker-test-kubernetes/pgdata
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -57,7 +57,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/walletstore
+      path: /home/dsz/fabric-samples-interticket/balancetracker-test-kubernetes/walletstore
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -86,7 +86,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/
+      path: /home/dsz/fabric-samples-interticket/balancetracker-test-kubernetes/
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -115,7 +115,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/couchdb-volume/
+      path: /home/dsz/fabric-samples-interticket/balancetracker-test-kubernetes/couchdb-volume/
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -144,7 +144,7 @@ items:
     accessModes:
       - ReadWriteMany
     hostPath:
-      path: /home/hyperledgerdev/fabric-samples-interticket/balancetracker-test-kubernetes/orderer-volume/
+      path: /home/dsz/fabric-samples-interticket/balancetracker-test-kubernetes/orderer-volume/
 kind: List
 metadata: {}
 
