@@ -1,0 +1,448 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: ca
+    name: ca
+  spec:
+    type: NodePort 
+    ports:
+    - name: "7054"
+      port: 7054
+      targetPort: 7054
+      nodePort: 31054
+    selector:
+      balancetracker: ca
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: couchdb
+    name: couchdb
+  spec:
+    ports:
+    - name: "5984"
+      port: 5984
+      targetPort: 5984
+    selector:
+      balancetracker: couchdb
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: orderer
+    name: orderer
+  spec:
+    type: NodePort 
+    ports:
+    - name: "7050"
+      port: 7050
+      targetPort: 7050
+      nodePort: 31050
+    selector:
+      balancetracker: orderer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: peer0
+    name: peer0
+  spec:
+    type: NodePort 
+    ports:
+    - name: "7051"
+      port: 7051
+      targetPort: 7051
+      nodePort: 31051
+    - name: "7053"
+      port: 7053
+      targetPort: 7053
+      nodePort: 31053
+    selector:
+      balancetracker: peer0
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: ca
+    name: ca
+  spec:
+    serviceName: ca
+    replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: ca
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: ca
+      spec:
+        containers:
+        - args:
+          - sh
+          - -c
+          - fabric-ca-server start -b admin:adminpw
+          env:
+          - name: FABRIC_CA_HOME
+            value: /etc/hyperledger/fabric-ca-server
+          - name: FABRIC_CA_SERVER_CA_CERTFILE
+            value: /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
+          - name: FABRIC_CA_SERVER_CA_KEYFILE
+            value: /etc/hyperledger/fabric-ca-server-config/c6ab586b721720bf477cf6da8e0423f29e40d6669ead0cf03f369adce8fec5f4_sk
+          - name: FABRIC_CA_SERVER_CA_NAME
+            value: ca
+          image: hyperledger/fabric-ca:1.4.6
+          name: ca
+          ports:
+          - containerPort: 7054
+          resources: {}
+          volumeMounts:
+          - mountPath: /etc/hyperledger/fabric-ca-server-config
+            name: ca-claim0
+            subPath: ./balancetracker-ds-kubernetes/crypto-config/peerOrganizations/org1.example.com/ca/
+        restartPolicy: Always
+        volumes:
+        - name: ca-claim0
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+  status:
+    replicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: cli
+    name: cli
+  spec:
+    serviceName: cli
+    replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: cli
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: cli
+      spec:
+        containers:
+        - args:
+          - /bin/bash
+          env:
+          - name: CORE_CHAINCODE_KEEPALIVE
+            value: "10"
+          - name: CORE_PEER_ADDRESS
+            value: peer0:7051
+          - name: CORE_PEER_ID
+            value: cli
+          - name: CORE_PEER_LOCALMSPID
+            value: Org1MSP
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+          - name: CORE_VM_ENDPOINT
+            value: unix:///host/var/run/docker.sock
+          - name: FABRIC_LOGGING_SPEC
+            value: info
+          - name: GOPATH
+            value: /opt/gopath
+          image: hyperledger/fabric-tools:1.4.6
+          name: cli
+          resources: {}
+          tty: true
+          volumeMounts:
+          - mountPath: /host/var/run/
+            name: cli-claim0
+          - mountPath: /opt/gopath/src/github.com/
+            name: cli-claim1
+            subPath: ./balancetracker-ds-kubernetes/balancetracker-chaincode/
+          - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+            name: cli-claim1
+            subPath: ./balancetracker-ds-kubernetes/crypto-config/
+          - mountPath: /opt/gopath/src/github.com/chaincode/
+            name: cli-claim1
+            subPath: ./balancetracker-ds-kubernetes/balancetracker-chaincode/code/
+          - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+            name: cli-claim1
+            subPath: ./balancetracker-ds-kubernetes/scripts/
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        restartPolicy: Always
+        volumes:
+        - name: cli-claim0
+          hostPath:
+            path: /var/run/
+        - name: cli-claim1
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+#        - name: cli-claim2
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: cli-claim3
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: cli-claim4
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+  status:
+    replicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: couchdb
+    name: couchdb
+  spec:
+    serviceName: couchdb
+    replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: couchdb
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: couchdb
+      spec:
+        containers:
+        - env:
+          - name: COUCHDB_PASSWORD
+          - name: COUCHDB_USER
+          image: hyperledger/fabric-couchdb:0.4
+          name: couchdb
+          ports:
+          - containerPort: 5984
+          resources: {}
+          volumeMounts:
+          - mountPath: /opt/couchdb/data
+            name: couchdb-claim0
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+        restartPolicy: Always
+        volumes:
+        - name: couchdb-claim0
+          persistentVolumeClaim:
+            claimName: couchdb-claim
+        restartPolicy: Always
+  status:
+    replicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: orderer
+    name: orderer
+  spec:
+    serviceName: orderer
+    replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: orderer
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: orderer
+      spec:
+        containers:
+        - args:
+          - orderer
+          env:
+          - name: FABRIC_LOGGING_SPEC
+            value: info
+          - name: ORDERER_GENERAL_GENESISFILE
+            value: /etc/hyperledger/configtx/genesis.block
+          - name: ORDERER_GENERAL_GENESISMETHOD
+            value: file
+          - name: ORDERER_GENERAL_LISTENADDRESS
+            value: 0.0.0.0
+          - name: ORDERER_GENERAL_LOCALMSPDIR
+            value: /etc/hyperledger/msp/orderer/msp
+          - name: ORDERER_GENERAL_LOCALMSPID
+            value: OrdererMSP
+          image: hyperledger/fabric-orderer:1.4.6
+          name: orderer
+          ports:
+          - containerPort: 7050
+          resources: {}
+          volumeMounts:
+          - mountPath: /etc/hyperledger/configtx
+            name: orderer-claim0
+            subPath: ./balancetracker-ds-kubernetes/config/
+          - mountPath: /etc/hyperledger/msp/orderer
+            name: orderer-claim0
+            subPath: ./balancetracker-ds-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/
+          - mountPath: /etc/hyperledger/msp/peerOrg1
+            name: orderer-claim0
+            subPath: ./balancetracker-ds-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
+          - mountPath: /var/hyperledger/production/orderer
+            name: orderer-claim1
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+        restartPolicy: Always
+        volumes:
+        - name: orderer-claim0
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+        - name: orderer-claim1
+          persistentVolumeClaim:
+            claimName: orderer-claim
+#        - name: orderer-claim1
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: orderer-claim2
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+  status:
+    replicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    creationTimestamp: null
+    labels:
+      balancetracker: peer0
+    name: peer0
+  spec:
+    serviceName: peer0
+    replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: peer0
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: peer0
+      spec:
+        containers:
+        - args:
+          - peer
+          - node
+          - start
+          env:
+          - name: CORE_CHAINCODE_DEPLOYTIMEOUT
+            value: 300s
+          - name: CORE_CHAINCODE_EXECUTETIMEOUT
+            value: 300s
+          - name: CORE_CHAINCODE_LOGGING_LEVEL
+            value: info
+          - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+            value: couchdb:5984
+          - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+          - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
+          - name: CORE_LEDGER_STATE_STATEDATABASE
+            value: CouchDB
+          - name: CORE_PEER_ADDRESS
+            value: 0.0.0.0:7051
+          - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+            value: peer0:7051
+          - name: CORE_PEER_ID
+            value: peer0
+          - name: CORE_PEER_LOCALMSPID
+            value: Org1MSP
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /etc/hyperledger/msp/peer/
+          - name: CORE_VM_ENDPOINT
+            value: unix:///host/var/run/docker.sock
+          - name: FABRIC_LOGGING_SPEC
+            value: info
+          - name: CORE_PEER_CHAINCODELISTENADDRESS
+            value: 0.0.0.0:7052
+          - name: CORE_PEER_MSPCONFIGPATH
+            value: /etc/hyperledger/msp/users/Admin@org1.example.com/msp
+          - name: CORE_PEER_ADDRESSAUTODETECT
+            value: "true"
+          image: hyperledger/fabric-peer:1.4.6
+          name: peer0
+          ports:
+          - containerPort: 7051
+          - containerPort: 7053
+          resources: {}
+          volumeMounts:
+          - mountPath: /host/var/run/
+            name: peer0-claim0
+          - mountPath: /etc/hyperledger/msp/peer
+            name: peer0-claim1
+            subPath: ./balancetracker-ds-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/
+          - mountPath: /etc/hyperledger/msp/users
+            name: peer0-claim1
+            subPath: ./balancetracker-ds-kubernetes/crypto-config/peerOrganizations/org1.example.com/users/
+          - mountPath: /etc/hyperledger/configtx
+            name: peer0-claim1
+            subPath: ./balancetracker-ds-kubernetes/config/
+          - mountPath: /var/hyperledger/production
+            name: peer0-claim2
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric
+        restartPolicy: Always
+        volumes:
+        - name: peer0-claim0
+          hostPath:
+            path: /var/run/ 
+        - name: peer0-claim1
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+        - name: peer0-claim2
+          persistentVolumeClaim:
+            claimName: peer-claim
+#        - name: peer0-claim2
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+#        - name: peer0-claim3
+#          persistentVolumeClaim:
+#            claimName: fabrichome-claim
+  status:
+    replicas: 1
+kind: List
+metadata: {}
+

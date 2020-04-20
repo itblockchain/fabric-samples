@@ -1,0 +1,38 @@
+---
+name: basic-network
+version: 1.0.0
+client:
+    organization: Org1
+    connection:
+        timeout:
+            peer:
+                endorser: '300'
+            orderer: '300'
+channels:
+    mychannel:
+        orderers:
+        - orderer
+        peers:
+            peer0:
+                endorsingPeer: true
+                chaincodeQuery: true
+                ledgerQuery: true
+                eventSource: true
+organizations:
+    Org1:
+        mspid: Org1MSP
+        peers:
+        - peer0
+        certificateAuthorities:
+        - ca
+orderers:
+    orderer:
+        url: grpc://localhost:7050
+peers:
+    peer0:
+        url: grpc://localhost:7051
+        eventUrl: grpc://localhost:7053
+certificateAuthorities:
+    ca:
+        url: http://localhost:7054
+        caName: ca

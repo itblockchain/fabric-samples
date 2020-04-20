@@ -1,0 +1,35 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: setuppod
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: dev
+    labels:
+      balancetracker: setuppod
+  spec:
+    restartPolicy: Never
+    containers:
+      - name: setupcontainer
+        image: nginx
+        command: ["/bin/sh", "-c", "--"]
+        args:
+          - echo "Mounting working directories";
+            ls;
+            cd /fabrichome;
+            pwd;
+            ls;            
+            while true; do sleep 5; done;
+        volumeMounts:
+          - mountPath: /fabrichome
+            name: fabrichome-claim-setup
+    volumes:
+      - name: fabrichome-claim-setup
+        persistentVolumeClaim:
+          claimName: fabrichome-claim
+kind: List
+metadata: {}
+
