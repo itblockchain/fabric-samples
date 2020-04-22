@@ -1,0 +1,93 @@
+{
+	"name": "basic-network",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": true,
+		"adminUser": "exploreradmin",
+		"adminPassword": "Blockchain4ever",
+		"enableAuthentication": false,
+		"organization": "Org1MSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"bcchannel": {
+			"peers": {
+				"peer0": {},
+				"peer1": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"Org1MSP": {
+			"mspid": "Org1MSP",
+			"fullpath": true,
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/5d0122ed3078c36749346bbf976b23a9cc47e23cb3650cb444dd288d15c5a80a_sk"
+			},
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem"
+			}
+		},
+        "OrdererMSP": {
+          "mspid": "OrdererMSP",
+          "adminPrivateKey": {
+            "path":
+              "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/6551316ea8dde5cccba2cf922dbcd2b20df15b8d911c1b4371b7d0b57eeea711_sk"
+          },
+		  "signedCert": {
+			  "path": "/tmp/crypto/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem"
+		  }
+        }
+	},
+
+	"peers": {
+		"peer0": {
+			"url": "grpcs://peer0:7051",
+			"eventUrl": "grpcs://peer0:7053",
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0"
+			}
+		},
+		"peer1": {
+			"url": "grpcs://peer1:7051",
+			"eventUrl": "grpcs://peer1:7053",
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "peer1"
+			}
+
+		}
+	},
+      "orderers": {
+        "orderer": {
+          "url": "grpc://orderer:7050"
+		},
+		"orderer1": {
+			"url": "grpc://orderer1:7050"
+		  },
+		"orderer2": {
+			"url": "grpc://orderer2:7050"
+		  }  
+      }
+}

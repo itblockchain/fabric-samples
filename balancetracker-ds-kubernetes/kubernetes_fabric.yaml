@@ -266,7 +266,6 @@ items:
         - name: couchdb-claim0
           persistentVolumeClaim:
             claimName: couchdb-claim
-        restartPolicy: Always
   status:
     replicas: 1
 - apiVersion: apps/v1

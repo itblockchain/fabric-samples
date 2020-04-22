@@ -1,0 +1,78 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: uat
+    creationTimestamp: null
+    labels:
+      balancetracker: explorerdb
+    name: explorerdb
+  spec:
+    ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+    selector:
+      balancetracker: explorerdb
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      author: Interticket
+      product: BalanceTracker
+      version: uat
+    creationTimestamp: null
+    labels:
+      balancetracker: explorerdb
+    name: explorerdb
+  spec:
+    serviceName: explorerdb
+    replicas: 1
+    selector:
+      matchLabels:
+        balancetracker: explorerdb
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          balancetracker: explorerdb
+      spec:
+        containers:
+        - env:
+          - name: DATABASE_DATABASE
+            value: fabricexplorer
+          - name: DATABASE_PASSWORD
+            value: Blockchain4ever
+          - name: DATABASE_USERNAME
+            value: hppoc
+          image: hyperledger/explorer-db:1.0.0-rc2
+          name: explorerdb
+          ports:
+          - containerPort: 5432
+          resources: {}
+          volumeMounts:
+          - mountPath: /docker-entrypoint-initdb.d/
+            name: explorerdb-claim0
+            subPath: ./balancetracker-dsqa-kubernetes/app/persistence/fabric/postgreSQL/db/
+          - mountPath: /var/lib/postgresql/data/
+            name: pgdata-volume-claim
+        hostname: explorerdb
+        restartPolicy: Always
+        volumes:
+        - name: explorerdb-claim0
+          persistentVolumeClaim:
+            claimName: fabrichome-claim
+        - name: pgdata-volume-claim
+          persistentVolumeClaim:
+            claimName: pgdata-claim
+  status:
+    replicas: 1
+kind: List
+metadata: {}
+

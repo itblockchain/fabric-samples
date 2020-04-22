@@ -13,4 +13,5 @@
 /balancetracker-test-network/balancetracker-chaincode
 /balancetracker-test-kubernetes/balancetracker-chaincode
 /balancetracker-ds-kubernetes/balancetracker-chaincode
+/balancetracker-dsqa-kubernetes/balancetracker-chaincode
 
