@@ -40,6 +40,12 @@ echo $3
 # gcloud compute firewall-rules create fabric5 --allow tcp:31055
 # gcloud compute firewall-rules create fabric6 --allow tcp:31061
 
+# create balancetracker disk
+# gcloud compute disks create --size=1GB --zone=europe-west3-c balancetracker-disk
+
+# resize cluster
+# gcloud container clusters resize balancetracker-ds --node-pool default-pool --zone=europe-west3-c --size 2
+
 echo "##########################################################"
 echo "##### Copy files: analyze input parameters #########"
 echo "##########################################################"
@@ -76,18 +82,20 @@ kubectl create -f kubernetes_fabricvolumes.yaml
 sleep 100
 
 # create setup pod and configure mounts
-kubectl create -f kubernetes_setuppod.yaml
+# kubectl create -f kubernetes_setuppod.yaml
 sleep 100
 
+# PODSETUP=$(kubectl get pod -l balancetracker=setuppod -o jsonpath="{.items[0].metadata.name}")
+
 # copy config files to the mapped directory
-kubectl cp /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes setuppod:/fabrichome
+# kubectl cp /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes $PODSETUP:/fabrichome
 
 sleep 30
 
 # Create new network
 kubectl create -f kubernetes_fabric.yaml
 
-sleep 100
+sleep 300
 
 PODPEERCA=$(kubectl get pod -l balancetracker=ca -o jsonpath="{.items[0].metadata.name}")
 

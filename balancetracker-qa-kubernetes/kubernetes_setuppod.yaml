@@ -30,6 +30,7 @@ items:
       - name: fabrichome-claim-setup
         persistentVolumeClaim:
           claimName: fabrichome-claim
+  status: {}
 kind: List
 metadata: {}
 

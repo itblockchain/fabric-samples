@@ -1,72 +1,43 @@
 apiVersion: v1
 items:
+- apiVersion: storage.k8s.io/v1
+  kind: StorageClass
+  metadata:
+    name: faster
+  provisioner: kubernetes.io/gce-pd
+  parameters:
+    type: pd-ssd
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: pgdata-claim
   spec:
-    storageClassName: standard
-    volumeName: pgdata-volume
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: pgdata-volume
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: pgdata-volume
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/pgdata
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: walletstore-claim
   spec:
-    storageClassName: standard
-    volumeName: walletstore-volume
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: walletstore-volume
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: walletstore-volume
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/walletstore
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: fabrichome-claim
   spec:
-    storageClassName: standard
+    storageClassName: ""
     volumeName: fabrichome-volume
     accessModes:
-      - ReadWriteMany
+      - ReadOnlyMany
     resources:
       requests:
         storage: 100Mi
@@ -82,214 +53,93 @@ items:
   spec:
     capacity:
       storage: 100Mi
-    storageClassName: standard
+    storageClassName: ""
     accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/
+      - ReadOnlyMany
+    claimRef:
+      namespace: default
+      name: fabrichome-claim
+    gcePersistentDisk:
+      pdName: balancetracker-disk
+      fsType: ext4
+      readOnly: true
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: couchdb-claim0
   spec:
-    storageClassName: standard
-    volumeName: couchdb-volume0
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: couchdb-volume0
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: couchdb-volume0
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/couchdb0
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: couchdb-claim1
   spec:
-    storageClassName: standard
-    volumeName: couchdb-volume1
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: couchdb-volume1
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: couchdb-volume1
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/couchdb1
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: orderer-disk-claim
   spec:
-    storageClassName: standard
-    volumeName: orderer-disk-volume
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: orderer-disk-volume
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: orderer-disk-volume
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/orderer0
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: orderer-disk-claim1
   spec:
-    storageClassName: standard
-    volumeName: orderer-disk-volume1
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: orderer-disk-volume1
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: orderer-disk-volume1
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/orderer1
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: orderer-disk-claim2
   spec:
-    storageClassName: standard
-    volumeName: orderer-disk-volume2
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: orderer-disk-volume2
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: orderer-disk-volume2
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/orderer2
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: peer-disk-claim0
   spec:
-    storageClassName: standard
-    volumeName: peer-disk-volume0
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: peer-disk-volume0
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: peer-disk-volume0
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/peer0
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: peer-disk-claim1
   spec:
-    storageClassName: standard
-    volumeName: peer-disk-volume1
+    storageClassName: faster
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     resources:
       requests:
         storage: 100Mi
-    selector:
-      matchLabels:
-        name: peer-disk-volume1
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: peer-disk-volume1
-    labels:
-      type: local
-  spec:
-    capacity:
-      storage: 100Mi
-    storageClassName: standard
-    accessModes:
-      - ReadWriteMany
-    hostPath:
-      path: /home/dsz/fabric-samples-interticket/balancetracker-dsqa-kubernetes/peer1
 kind: List
 metadata: {}
 

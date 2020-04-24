@@ -228,14 +228,17 @@ items:
           - mountPath: /etc/hyperledger/fabric-ca-server-config
             name: ca-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/ca/
+            readOnly: true
           - mountPath: /etc/hyperledger/scripts
             name: ca-claim0
             subPath: ./balancetracker-dsqa-kubernetes/scripts/
+            readOnly: true
         restartPolicy: Always
         volumes:
         - name: ca-claim0
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
   status:
     replicas: 1
 - apiVersion: apps/v1
@@ -299,15 +302,19 @@ items:
           - mountPath: /opt/gopath/src/github.com/
             name: cli-claim1
             subPath: ./balancetracker-dsqa-kubernetes/balancetracker-chaincode/
+            readOnly: true
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
             name: cli-claim1
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/
+            readOnly: true
           - mountPath: /opt/gopath/src/github.com/chaincode/
             name: cli-claim1
             subPath: ./balancetracker-dsqa-kubernetes/balancetracker-chaincode/code/
+            readOnly: true
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
             name: cli-claim1
             subPath: ./balancetracker-dsqa-kubernetes/scripts/
+            readOnly: true
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         restartPolicy: Always
         volumes:
@@ -317,6 +324,7 @@ items:
         - name: cli-claim1
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
 #        - name: cli-claim2
 #          persistentVolumeClaim:
 #            claimName: fabrichome-claim
@@ -482,15 +490,19 @@ items:
           - mountPath: /etc/hyperledger/configtx
             name: orderer-claim0
             subPath: ./balancetracker-dsqa-kubernetes/config/
+            readOnly: true
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
             name: orderer-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/orderer
             name: orderer-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/peerOrg1
             name: orderer-claim0            
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
+            readOnly: true
           - mountPath: /var/hyperledger/production/orderer
             name: orderer-disk-claim-0
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
@@ -499,6 +511,7 @@ items:
         - name: orderer-claim0
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
         - name: orderer-disk-claim-0
           persistentVolumeClaim:
             claimName: orderer-disk-claim
@@ -576,15 +589,19 @@ items:
           - mountPath: /etc/hyperledger/configtx
             name: orderer1-claim0
             subPath: ./balancetracker-dsqa-kubernetes/config/
+            readOnly: true
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
             name: orderer1-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/orderer
             name: orderer1-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/peerOrg1
             name: orderer1-claim0            
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
+            readOnly: true
           - mountPath: /var/hyperledger/production/orderer
             name: orderer-disk-claim-1
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
@@ -593,6 +610,7 @@ items:
         - name: orderer1-claim0
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
         - name: orderer-disk-claim-1
           persistentVolumeClaim:
             claimName: orderer-disk-claim1
@@ -670,15 +688,19 @@ items:
           - mountPath: /etc/hyperledger/configtx
             name: orderer2-claim0
             subPath: ./balancetracker-dsqa-kubernetes/config/
+            readOnly: true
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
             name: orderer2-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/orderer
             name: orderer2-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/peerOrg1
             name: orderer2-claim0            
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/
+            readOnly: true
           - mountPath: /var/hyperledger/production/orderer
             name: orderer-disk-claim-2
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
@@ -687,6 +709,7 @@ items:
         - name: orderer2-claim0
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
         - name: orderer-disk-claim-2
           persistentVolumeClaim:
             claimName: orderer-disk-claim2
@@ -783,15 +806,19 @@ items:
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
             name: peer0-claim1
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/peer
             name: peer0-claim1
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/users
             name: peer0-claim1
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/users/
+            readOnly: true
           - mountPath: /etc/hyperledger/configtx
             name: peer0-claim1
             subPath: ./balancetracker-dsqa-kubernetes/config/
+            readOnly: true
           - mountPath: /var/hyperledger/production
             name: peer0-disk-claim-0
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric
@@ -803,6 +830,7 @@ items:
         - name: peer0-claim1
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
         - name: peer0-disk-claim-0
           persistentVolumeClaim:
             claimName: peer-disk-claim0
@@ -899,15 +927,19 @@ items:
           - mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
             name: peer1-claim1
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/peer
             name: peer1-claim1
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/
+            readOnly: true
           - mountPath: /etc/hyperledger/msp/users
             name: peer1-claim1
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/peerOrganizations/org1.example.com/users/
+            readOnly: true
           - mountPath: /etc/hyperledger/configtx
             name: peer1-claim1
             subPath: ./balancetracker-dsqa-kubernetes/config/
+            readOnly: true
           - mountPath: /var/hyperledger/production
             name: peer1-disk-claim-1
           workingDir: /opt/gopath/src/github.com/hyperledger/fabric
@@ -919,6 +951,7 @@ items:
         - name: peer1-claim1
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
         - name: peer1-disk-claim-1
           persistentVolumeClaim:
             claimName: peer-disk-claim1
