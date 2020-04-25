@@ -16,6 +16,7 @@ echo
 
 # Setup google credentials to kubectl
 # gcloud container clusters get-credentials balancetracker-ds --region europe-west3-c
+# gcloud container clusters get-credentials balancetracker-uat --region europe-west3-c
 # Check if current config is set
 # kubectl config current-context
 
