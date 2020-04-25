@@ -68,15 +68,19 @@ items:
           - mountPath: /opt/explorer/app/platform/fabric/
             name: explorer-claim0
             subPath: ./balancetracker-dsqa-kubernetes/app/platform/fabric/
+            readOnly: true
           - mountPath: /opt/explorer/app/platform/fabric/connection-profile
             name: explorer-claim0
             subPath: ./balancetracker-dsqa-kubernetes/app/platform/fabric/connection-profile/
+            readOnly: true
           - mountPath: /tmp/crypto
             name: explorer-claim0
             subPath: ./balancetracker-dsqa-kubernetes/crypto-config/
+            readOnly: true
           - mountPath: /opt/explorer/ssl-certs/
             name: explorer-claim0
             subPath: ./balancetracker-dsqa-kubernetes/explorer_ssl_certs/
+            readOnly: true
           - mountPath: /opt/wallet
             name: walletstore-volume-claim
         hostname: explorer
@@ -85,6 +89,7 @@ items:
         - name: explorer-claim0
           persistentVolumeClaim:
             claimName: fabrichome-claim
+            readOnly: true
 #        - name: explorer-claim1
 #          persistentVolumeClaim:
 #            claimName: fabrichome-claim
